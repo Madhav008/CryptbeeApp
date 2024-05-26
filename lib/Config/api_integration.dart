@@ -62,78 +62,8 @@ class ApiCalls {
     }
   }
 
-  static Future<dynamic> sendEmailOTP({required String email}) async {
-    try {
-      log("Began Otp Send Process For $email ");
-      final response = await post(
-        Uri.parse(Links.prefixLink + Links.sendEmailOtpLink),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, dynamic>{"email": email},
-        ),
-      );
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
 
-      log(output.toString());
-      return output;
-    } on SocketException {
-      log("NO Internet Error");
-      return noInternet;
-    }
-  }
 
-  static Future<dynamic> verifyEmailOTP(
-      {required String email, required int otp}) async {
-    try {
-      log("Began Otp Verification Process For $email with pin $otp");
-      final response = await post(
-        Uri.parse(Links.prefixLink + Links.verifyEmailOtpLink),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, dynamic>{"email": email, 'otp': otp},
-        ),
-      );
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-
-      log(output.toString());
-      return output;
-    } on SocketException {
-      log("NO Internet Error");
-      return noInternet;
-    }
-  }
-
-  static Future<dynamic> resetPass(
-      {required String email,
-      required String otp,
-      required String password}) async {
-    try {
-      log("Began Reset Password Process For $email with otp $otp and password $password");
-      final response = await patch(
-        Uri.parse(Links.prefixLink + Links.resetPassLink),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, dynamic>{"email": email, 'otp': otp, 'password': password},
-        ),
-      );
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-
-      log(output.toString());
-      return output;
-    } on SocketException {
-      log("NO Internet Error");
-      return noInternet;
-    }
-  }
 
   static Future<void> renewToken() async {
     try {
@@ -166,31 +96,7 @@ class ApiCalls {
     }
   }
 
-  static Future<dynamic> getNews() async {
-    try {
-      Response response = await get(
-        Uri.parse(Links.prefixLink + Links.newsLink),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${App.acesss}'
-        },
-      );
-      if (response.statusCode == 401) {
-        await renewToken();
-        response = await get(
-          Uri.parse(Links.prefixLink + Links.newsLink),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-        );
-      }
-      final output = jsonDecode(response.body);
-      return output;
-    } catch (e) {
-      log("$e");
-    }
-  }
+
 
   static Future<dynamic> changePassword(String oldPass, String newPass) async {
     try {

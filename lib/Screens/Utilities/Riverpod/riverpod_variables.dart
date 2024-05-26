@@ -229,15 +229,13 @@ final panNumberNameErrorProvider =
 HomeBottomNavNotifier homeBottomNavNotifier = HomeBottomNavNotifier();
 
 final homeBottomNavProvider =
-    StateNotifierProvider.autoDispose<HomeBottomNavNotifier, int>(
-        (ref) {
+    StateNotifierProvider.autoDispose<HomeBottomNavNotifier, int>((ref) {
+  ref.onDispose(() {
+    homeBottomNavNotifier = HomeBottomNavNotifier();
+  });
 
-          ref.onDispose(() {
-            homeBottomNavNotifier = HomeBottomNavNotifier();
-          });
-
-          return homeBottomNavNotifier;
-        });
+  return homeBottomNavNotifier;
+});
 
 //INVEST TAB
 
@@ -247,10 +245,6 @@ final investTopNavProvider = StateNotifierProvider<InvestTopNavNotifier, int>(
     (ref) => investTopNavNotifier);
 
 //HOME
-
-final getNewsProvider = FutureProvider<dynamic>((ref) async {
-  return ApiCalls.getNews();
-});
 
 final getHoldingsProvider = FutureProvider<dynamic>((ref) async {
   return ApiCalls.getHoldings();
