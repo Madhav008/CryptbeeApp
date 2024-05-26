@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:cryptbee/Screens/Homepage/Home%20Tabs/home_tab_no_pan.dart';
 import 'package:cryptbee/Screens/Homepage/Home%20Tabs/home_tab_pan.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/profile_tab.dart';
 import 'package:cryptbee/Screens/Homepage/wallet_tab.dart';
@@ -34,7 +33,7 @@ class HomePage extends ConsumerWidget {
 }
 
 List<Widget> homePageWidgets = [
-  if (User.panVerify ?? false) const HomeTabPan() else const HomeTabNoPan(),
+  const HomeTabPan(),
   const InvestTab(),
   const WalletTab(),
   ProfileTab()

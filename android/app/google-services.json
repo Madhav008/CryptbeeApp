@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "994430638408",
-    "project_id": "cryptbee-6f332",
-    "storage_bucket": "cryptbee-6f332.appspot.com"
+    "project_number": "440810007685",
+    "project_id": "briklin-2e342",
+    "storage_bucket": "briklin-2e342.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:994430638408:android:adc36f9be850c6c2bfbb7d",
+        "mobilesdk_app_id": "1:440810007685:android:9f86e4fd1059ee7c790dec",
         "android_client_info": {
           "package_name": "com.example.cryptbee"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "440810007685-0ibmsj83boqbjsc412q11ndb74e40kej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDhGYykMDDjglpAJsQqNE13xply2qpVOcg"
+          "current_key": "AIzaSyDQkFE9nLXyo0AIzltQYz2ccubrKHr09QE"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440810007685-0ibmsj83boqbjsc412q11ndb74e40kej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

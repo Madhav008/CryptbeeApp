@@ -3,16 +3,11 @@ import 'dart:developer';
 import 'package:cryptbee/Routing/route_names.dart';
 import 'package:cryptbee/Screens/AuthScreens/forget_pass_otp_page.dart';
 import 'package:cryptbee/Screens/AuthScreens/forget_password_page.dart';
-import 'package:cryptbee/Screens/Homepage/Profile/phone_number_page.dart';
-import 'package:cryptbee/Screens/AuthScreens/pan_number_page.dart';
 import 'package:cryptbee/Screens/AuthScreens/set_password.dart';
 import 'package:cryptbee/Screens/AuthScreens/sign_in_page.dart';
 import 'package:cryptbee/Screens/AuthScreens/sign_up_page.dart';
-import 'package:cryptbee/Screens/AuthScreens/two_factor_page.dart';
 import 'package:cryptbee/Screens/AuthScreens/mail_opener.dart';
-import 'package:cryptbee/Screens/AuthScreens/verification_checker.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/change_password.dart';
-import 'package:cryptbee/Screens/Homepage/Profile/phone_otp_page.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/profile_pan.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/security.dart';
 import 'package:cryptbee/Screens/Homepage/coin_page.dart';
@@ -75,15 +70,6 @@ class AppRouter {
                   },
                 )
               ]),
-          GoRoute(
-            name: RouteNames.twoFactor,
-            path: 'twofactor',
-            pageBuilder: (context, state) {
-              return const MaterialPage(
-                child: TwoFactorPage(),
-              );
-            },
-          ),
         ],
       ),
       GoRoute(
@@ -107,27 +93,6 @@ class AppRouter {
             },
           ),
         ],
-      ),
-      GoRoute(
-        name: RouteNames.panNumber,
-        path: '/pannumber/:email',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            child: PanNumberPage(
-              email: state.pathParameters['email']!,
-            ),
-          );
-        },
-      ),
-      GoRoute(
-        name: RouteNames.verifier,
-        path: '/verifier/:email/:token',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            child: VerificationChecker(
-                email: state.pathParameters['email']!, token: state.pathParameters['token']!),
-          );
-        },
       ),
       GoRoute(
         name: RouteNames.homePage,
@@ -176,28 +141,6 @@ class AppRouter {
                     child: ChangePassword(),
                   );
                 },
-              ),
-              GoRoute(
-                name: RouteNames.phoneNumber,
-                path: 'phonenumber',
-                pageBuilder: (context, state) {
-                  return MaterialPage(
-                    child: PhoneNumberPage(),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    name: RouteNames.phoneNumberOTP,
-                    path: 'phonenumberOTP:/phone_number',
-                    pageBuilder: (context, state) {
-                      return MaterialPage(
-                        child: PhoneOtpPage(
-                          phoneNumber: state.pathParameters['phone_number']!,
-                        ),
-                      );
-                    },
-                  )
-                ],
               ),
             ],
           )

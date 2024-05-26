@@ -12,7 +12,7 @@ class App {
 
 class User {
   static String photo =
-      "https://crypt-bee.centralindia.cloudapp.azure.com/media/profile.jpg";
+      "https://cryptbee.anshumannandan.tech/media/profile.jpg";
   static String name = "";
   static String email = "";
   static String pan = "";

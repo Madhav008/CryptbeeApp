@@ -12,37 +12,37 @@ const String noInternet = "App_Error:No_Internet";
 Future<void> saveData(Map response, bool all) async {
   log("saving response of $response ");
   final prefs = await SharedPreferences.getInstance();
+
   if (response.containsKey('access')) {
     prefs.setString('access', response['access']);
     App.acesss = response['access'];
     log("saving access of ${response['access']} ");
   }
+
   if (response.containsKey('refresh')) {
     prefs.setString('refresh', response['refresh']);
     App.refresh = response['refresh'];
     log("saving refresh of ${response['refresh']} ");
   }
+
   if (response.containsKey("email")) {
     prefs.setString('email', response['email']);
     User.email = response['email'];
     log("saving name of ${response['email']} ");
   }
+
   if (response.containsKey("name")) {
     prefs.setString('name', response['name']);
     User.name = response['name'];
     log("saving name of ${response['name']} ");
   }
+
   if (response.containsKey("profile_picture")) {
     prefs.setString('profile_picture', response['profile_picture']);
     User.photo = response['profile_picture'];
     log("saving photo of ${response['profile_picture']} ");
   }
-  if (response.containsKey('two_factor_verification')) {
-    prefs.setBool(
-        'two_factor_verification', response['two_factor_verification']);
-    User.twoFactor = response['two_factor_verification'];
-    log("saving two_factor of ${response['two_factor_verification']} ");
-  }
+
   if (response.containsKey("pan_number")) {
     prefs.setString('pan_number', response['pan_number']);
     User.pan = response['pan_number'];
@@ -74,6 +74,7 @@ Future<void> saveData(Map response, bool all) async {
     User.wallet = response['walltet'];
     log("saving walltet of ${response['walltet']} ");
   }
+
   log("Save Data Mobile veriification ${User.phoneVerified}");
 }
 
@@ -81,11 +82,11 @@ Future initAuth() async {
   final prefs = await SharedPreferences.getInstance();
   if (prefs.containsKey('access')) {
     String access = prefs.getString('access')!;
-    if (JwtDecoder.isExpired(access)) {
-      await ApiCalls.renewToken();
-    }
-    await ApiCalls.getUserDetails();
+    // if (JwtDecoder.isExpired(access)) {
+    //   await ApiCalls.renewToken();
+    // }
     await appInstanceInit();
+    await ApiCalls.getUserDetails();
     App.isLoggedIn = true;
   } else {
     App.isLoggedIn = false;
@@ -116,10 +117,6 @@ Future appInstanceInit() async {
     User.photo = prefs.getString('profile_picture') ??
         '"https://crypt-bee.centralindia.cloudapp.azure.com/media/profile.jpg"';
     log("initialised photo ${prefs.getString('profile_picture')}");
-  }
-  if (prefs.containsKey('two_factor_verification')) {
-    User.twoFactor = prefs.getBool('two_factor_verification');
-    log("initialised 2fa ${prefs.getBool('two_factor_verification')}");
   }
 
   if (prefs.containsKey('pan_number')) {

@@ -88,13 +88,9 @@ class SignInPage extends ConsumerWidget {
                             emailField.controller.text.toLowerCase();
                         await saveData(response, false);
 
-                        if (response['two_factor']) {
-                          context.goNamed(RouteNames.twoFactor);
-                        } else {
-                          await ApiCalls.getUserDetails();
+                        await ApiCalls.getUserDetails();
 
-                          context.goNamed(RouteNames.homePage);
-                        }
+                        context.goNamed(RouteNames.homePage);
                       } else {
                         signInPasswordErrorNotifer
                             .setVal(response[response.keys.first][0]);

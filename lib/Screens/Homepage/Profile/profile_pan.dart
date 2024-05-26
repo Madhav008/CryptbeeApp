@@ -99,7 +99,7 @@ class ProfilePan extends ConsumerWidget {
                           ),
                           const SizedBox(height: 29),
                           authlabelMedium(
-                            "We get your personal information from the verification process"),
+                              "We get your personal information from the verification process"),
                           const SizedBox(height: 44),
                           nameArea,
                           nameErrorLines,
@@ -116,31 +116,7 @@ class ProfilePan extends ConsumerWidget {
                                   ToastContext().init(context);
                                   if (!(nameErrorMsg == "" &&
                                       panErrorMsg == "")) {
-                                    if (nameErrorMsg != "Enter Valid Name") {
-                                      if (panErrorMsg != "Invalid Pan Number") {
-                                        final response =
-                                            await ApiCalls.panVerify(
-                                                email: User.email,
-                                                pan: panArea.controller.text,
-                                                name: nameArea.controller.text);
-
-                                        if (response == noInternet) {
-                                          internetHandler(context);
-                                        } else if (response['statusCode'] ==
-                                            200) {
-                                          Toast.show(
-                                              "Successfully Updated Details",
-                                              duration: 5,
-                                              gravity: Toast.bottom);
-                                          context.pop();
-                                        } else {
-                                          Toast.show(
-                                              response[response.keys.first][0],
-                                              duration: 5,
-                                              gravity: Toast.bottom);
-                                        }
-                                      }
-                                    }
+                                    if (nameErrorMsg != "Enter Valid Name") {}
                                   } else {
                                     panNumberPanErrorNotifier.setVal(
                                         "Enter either Name or Pan to Proceed");

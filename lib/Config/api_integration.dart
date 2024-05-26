@@ -41,7 +41,8 @@ class ApiCalls {
   static Future<dynamic> signUp(
       {required String email, required String password}) async {
     try {
-      log("Began Sign Up Process For $email $password");
+      log("Begin Sign Up Process For $email $password");
+      log(Links.prefixLink + Links.signUpLink);
       final response = await post(
         Uri.parse(Links.prefixLink + Links.signUpLink),
         headers: <String, String>{
@@ -53,33 +54,6 @@ class ApiCalls {
       );
       final output = jsonDecode(response.body);
       output['statusCode'] = response.statusCode;
-      log(output.toString());
-      return output;
-    } on SocketException {
-      log("NO Internet Error");
-      return noInternet;
-    }
-  }
-
-  static Future<dynamic> verifier(
-      {required String email, required String token}) async {
-    try {
-      log("Began Verification Process For $email $token");
-      final response = await post(
-        Uri.parse(Links.prefixLink + Links.verificationCheckerLink),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, dynamic>{"email": email, "token": token, 'onapp': true},
-        ),
-      );
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-
-      if (response.statusCode == 200) {
-        await saveData(output, false);
-      }
       log(output.toString());
       return output;
     } on SocketException {
@@ -150,68 +124,6 @@ class ApiCalls {
           <String, dynamic>{"email": email, 'otp': otp, 'password': password},
         ),
       );
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-
-      log(output.toString());
-      return output;
-    } on SocketException {
-      log("NO Internet Error");
-      return noInternet;
-    }
-  }
-
-  static Future<dynamic> panVerify(
-      {required String email,
-      required String pan,
-      required String name}) async {
-    try {
-      log("Began Pan Connecting Process For $email with pan $pan and name $name");
-      final Response response;
-      if (pan.isNotEmpty && name.isNotEmpty) {
-        response = await post(
-          Uri.parse(Links.prefixLink + Links.panLink),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{"email": email, 'pan_number': pan, 'name': name},
-          ),
-        );
-        if (response.statusCode == 200) {
-          User.panVerify = true;
-          User.name = name;
-        }
-      } else if (pan.isEmpty && name.isNotEmpty) {
-        response = await post(
-          Uri.parse(Links.prefixLink + Links.panLink),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{"email": email, 'name': name},
-          ),
-        );
-        if (response.statusCode == 200) {
-          User.name = name;
-        }
-      } else {
-        response = await post(
-          Uri.parse(Links.prefixLink + Links.panLink),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{"email": email, 'pan_number': pan},
-          ),
-        );
-        if (response.statusCode == 200) {
-          User.panVerify = true;
-        }
-      }
       final output = jsonDecode(response.body);
       output['statusCode'] = response.statusCode;
 
@@ -357,6 +269,8 @@ class ApiCalls {
 
   static Future<dynamic> getHoldings() async {
     try {
+      log("I am here");
+      log(Links.prefixLink + Links.holdingApiLink);
       Response response = await get(
         Uri.parse(Links.prefixLink + Links.holdingApiLink),
         headers: <String, String>{
@@ -390,181 +304,16 @@ class ApiCalls {
           'Authorization': 'Bearer ${App.acesss}'
         },
       );
-      if (response.statusCode == 401) {
-        await renewToken();
-        response = await get(
-          Uri.parse(Links.prefixLink + Links.userDetails),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-        );
-      }
+
+      print(response.body);
       final output = jsonDecode(response.body);
       await saveData(output, true);
       return output;
     } catch (e) {
-      log("$e");
+      print("$e");
     }
   }
 
-  static Future<dynamic> newTwoFactor(String phoneNumber) async {
-    try {
-      log("Began New Two factor for $phoneNumber");
-      Response response = await post(
-        Uri.parse(Links.prefixLink + Links.newTwoFactor),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${App.acesss}'
-        },
-        body: jsonEncode(
-          <String, dynamic>{"phone_number": phoneNumber},
-        ),
-      );
-      if (response.statusCode == 401) {
-        ApiCalls.renewToken();
-
-        response = await post(
-          Uri.parse(Links.prefixLink + Links.newTwoFactor),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{"phone_number": phoneNumber},
-          ),
-        );
-      }
-
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-      log(output.toString());
-      return output;
-    } catch (e) {
-      log("$e");
-    }
-  }
-
-  static Future<dynamic> verifyTwoFactor(int pin) async {
-    try {
-      log("Began New Two factor for $pin");
-      Response response = await put(
-        Uri.parse(Links.prefixLink + Links.verifyTwoFactor),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${App.acesss}'
-        },
-        body: jsonEncode(
-          <String, dynamic>{"otp": pin},
-        ),
-      );
-      if (response.statusCode == 401) {
-        ApiCalls.renewToken();
-
-        response = await post(
-          Uri.parse(Links.prefixLink + Links.verifyTwoFactor),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{"otp": pin},
-          ),
-        );
-      }
-
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-      log(output.toString());
-      return output;
-    } catch (e) {
-      log("$e");
-    }
-  }
-
-  static Future<dynamic> enableTwoFactor() async {
-    try {
-      log("Enabling 2fa");
-      Response response = await put(
-        Uri.parse(Links.prefixLink + Links.enableTwoFactor),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${App.acesss}'
-        },
-      );
-      if (response.statusCode == 401) {
-        ApiCalls.renewToken();
-
-        response = await put(
-          Uri.parse(Links.prefixLink + Links.enableTwoFactor),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-        );
-      }
-
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-      log(output.toString());
-      return output;
-    } catch (e) {
-      log("$e");
-    }
-  }
-
-  static Future<dynamic> disableTwoFactor() async {
-    try {
-      log("Disabling 2fa");
-      Response response = await put(
-        Uri.parse(Links.prefixLink + Links.disableTwoFactor),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${App.acesss}'
-        },
-      );
-      if (response.statusCode == 401) {
-        ApiCalls.renewToken();
-
-        response = await put(
-          Uri.parse(Links.prefixLink + Links.disableTwoFactor),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-        );
-      }
-
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-      log(output.toString());
-      return output;
-    } catch (e) {
-      log("$e");
-    }
-  }
-
-  static Future<dynamic> loginVerifyTwoFactor(int pin) async {
-    try {
-      log("Began New Two factor for ${User.email} with $pin");
-      Response response = await post(
-        Uri.parse(Links.prefixLink + Links.loginTwoFactorVerify),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, dynamic>{"otp": pin, "email": User.email},
-        ),
-      );
-
-      final output = jsonDecode(response.body);
-      output['statusCode'] = response.statusCode;
-      log(output.toString());
-      return output;
-    } catch (e) {
-      log("$e");
-    }
-  }
 
   static Future<bool> inWatchlist(String coinSmallName) async {
     try {
