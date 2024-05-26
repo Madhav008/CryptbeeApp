@@ -62,9 +62,6 @@ class ApiCalls {
     }
   }
 
-
-
-
   static Future<void> renewToken() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -95,8 +92,6 @@ class ApiCalls {
       log("$e");
     }
   }
-
-
 
   static Future<dynamic> changePassword(String oldPass, String newPass) async {
     try {
@@ -175,8 +170,6 @@ class ApiCalls {
 
   static Future<dynamic> getHoldings() async {
     try {
-      log("I am here");
-      log(Links.prefixLink + Links.holdingApiLink);
       Response response = await get(
         Uri.parse(Links.prefixLink + Links.holdingApiLink),
         headers: <String, String>{
@@ -219,7 +212,6 @@ class ApiCalls {
       print("$e");
     }
   }
-
 
   static Future<bool> inWatchlist(String coinSmallName) async {
     try {
@@ -351,6 +343,35 @@ class ApiCalls {
         );
       }
       final output = jsonDecode(response.body);
+
+      return output;
+    } catch (e) {
+      log("$e");
+    }
+  }
+
+  static Future<dynamic> getWallet() async {
+    try {
+      log("getting Wallet details}");
+      Response response = await get(
+        Uri.parse(Links.prefixLink + Links.walletLink),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${App.acesss}'
+        },
+      );
+      if (response.statusCode == 401) {
+        await renewToken();
+        response = await get(
+          Uri.parse(Links.prefixLink + Links.walletLink),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${App.acesss}'
+          },
+        );
+      }
+      final output = jsonDecode(response.body);
+      output['statusCode'] = response.statusCode;
       return output;
     } catch (e) {
       log("$e");

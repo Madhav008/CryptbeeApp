@@ -3,7 +3,6 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cryptbee/Config/api_integration.dart';
-import 'package:cryptbee/Config/websocket_integration.dart';
 import 'package:cryptbee/Routing/route_names.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/buy_coin_popup.dart';
@@ -30,55 +29,56 @@ class CoinPage extends ConsumerStatefulWidget {
 class _CoinPageState extends ConsumerState<CoinPage> {
   @override
   void initState() {
-    log(widget.shortName);
-    ApiCalls.inWatchlist(widget.shortName).then((value) {
-      log(value.toString());
-      inWatchListBoolNotifier.setBool(value);
-    });
+    print(widget.shortName);
+    // ApiCalls.inWatchlist(widget.shortName).then((value) {
+    //   log(value.toString());
+    //   inWatchListBoolNotifier.setBool(value);
+    // });
     ApiCalls.getCoinDetails().then((value) {
-      coinPageCoinDescNotifier.setVal(value['Description']);
+      coinPageCoinDescNotifier.setVal(value['info']);
     });
-    ref.listenManual(
-      singleCoinsSocketProvider,
-      (previous, next) {
-        {
-          next.whenData(
-            (value) {
-              var data = value['data'];
-              if (widget.chartData.length < 10) {
-                widget.chartData = [
-                  ...widget.chartData,
-                  CoinData(DateTime.now(), data['Price'])
-                ];
-              } else {
-                widget.chartData.add(CoinData(DateTime.now(), data['Price']));
-                widget.chartData.removeAt(0);
-              }
-              if (widget.chartSeriesController != null) {
-                if (widget.chartData.length >= 10) {
-                  widget.chartSeriesController!.updateDataSource(
-                      addedDataIndex: widget.chartData.length - 1,
-                      removedDataIndex: 0);
-                } else {
-                  widget.chartSeriesController!.updateDataSource(
-                      addedDataIndex: widget.chartData.length - 1);
-                }
-              }
-            },
-          );
-        }
-      },
-    );
+    // ref.listenManual(
+    //   getHoldingsProvider,
+    //   (previous, next) {
+    //     {
+    //       next.whenData(
+    //         (value) {
+    //           var data = value['data'];
+    //           if (widget.chartData.length < 10) {
+    //             widget.chartData = [
+    //               ...widget.chartData,
+    //               CoinData(DateTime.now(), data['Price'])
+    //             ];
+    //           } else {
+    //             widget.chartData.add(CoinData(DateTime.now(), data['Price']));
+    //             widget.chartData.removeAt(0);
+    //           }
+    //           if (widget.chartSeriesController != null) {
+    //             if (widget.chartData.length >= 10) {
+    //               widget.chartSeriesController!.updateDataSource(
+    //                   addedDataIndex: widget.chartData.length - 1,
+    //                   removedDataIndex: 0);
+    //             } else {
+    //               widget.chartSeriesController!.updateDataSource(
+    //                   addedDataIndex: widget.chartData.length - 1);
+    //             }
+    //           }
+    //         },
+    //       );
+    //     }
+    //   },
+    // );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     App.currentCoin = widget.shortName;
-    final singleCoinsAsyncValue = ref.watch(singleCoinsSocketProvider);
+    final singleCoinsAsyncValue = ref.watch(getCoinDetailProvider);
     return singleCoinsAsyncValue.when(
       data: (data) {
         data = data['data'];
+        print(data);
         return Scaffold(
           backgroundColor: Palette.secondaryBlackColor,
           body: SingleChildScrollView(
@@ -117,7 +117,7 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                               backgroundColor: Colors.transparent,
                               radius: 19,
                               backgroundImage: CachedNetworkImageProvider(
-                                "https://www.${data['ImageURL']}",
+                                data['image'],
                               ),
                             ),
                             Padding(
@@ -166,19 +166,19 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text("Prices", style: titleMedium()),
-                              Text("₹ ${data['Price'].toStringAsFixed(2)}",
+                              Text("₹ ${data['price'].toStringAsFixed(2)}",
                                   style: bodyLarge()),
                               Row(
                                 children: [
-                                  (data['ChangePct'] >= 0)
+                                  (data['changePercent'] >= 0)
                                       ? const Icon(Icons.arrow_upward_rounded,
                                           color: Palette.secondaryCorrectColor)
                                       : const Icon(Icons.arrow_downward_rounded,
                                           color: Palette.secondaryErrorColor),
                                   Text(
-                                    "${data['ChangePct'].toStringAsFixed(2)} %",
+                                    "${data['changePercent'].toStringAsFixed(2)} %",
                                     style: bodyLarge(
-                                        fontColor: (data['ChangePct'] >= 0)
+                                        fontColor: (data['changePercent'] >= 0)
                                             ? Palette.secondaryCorrectColor
                                             : Palette.secondaryErrorColor),
                                   ),
@@ -210,7 +210,7 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                         SizedBox(
                           height: 148,
                           child: SingleChildScrollView(
-                            child: ref.watch(coinPageCoinDescProvider) == null
+                            child: data['info'] == null
                                 ? const SizedBox(
                                     height: 20,
                                     width: 20,
@@ -222,9 +222,7 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0),
                                     child: Text(
-                                      ref
-                                          .watch(coinPageCoinDescProvider)
-                                          .toString(),
+                                      data['info'],
                                       style: bodyLarge(),
                                     ),
                                   ),
@@ -232,20 +230,11 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                         ),
                         Expanded(
                           child: Center(
-                            child: User.panVerify ?? false
-                                ? LogInButton(
-                                    text: "Buy Now",
-                                    function: () {
-                                      coinPagePopupNotifier.toggle();
-                                    })
-                                : LogInButton(
-                                    text: "Verify Pan",
-                                    function: () {
-                                      context
-                                          .goNamed(RouteNames.personalDetails);
-                                    },
-                                  ),
-                          ),
+                              child: LogInButton(
+                                  text: "Buy Now",
+                                  function: () {
+                                    coinPagePopupNotifier.toggle();
+                                  })),
                         )
                       ],
                     ),

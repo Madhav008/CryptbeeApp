@@ -18,7 +18,9 @@ class HomeTabPan extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final news = ref.watch(getNewsProvider);
     final holdings = ref.watch(getHoldingsProvider);
-    ref.invalidate(getHoldingsProvider);
+    // final investTabIndex = ref.watch(investTopNavProvider);
+
+    // ref.invalidate(getHoldingsProvider);
 
     return SizedBox(
       height: double.infinity,
@@ -32,16 +34,17 @@ class HomeTabPan extends ConsumerWidget {
             const SizedBox(height: 24),
             holdings.when(
               data: (data) {
+                // print(data);
                 return SizedBox(
-                  height: data['MyHoldings'].length <= 4 ? 74 : 148,
+                  height: data['matches'].length <= 4 ? 74 : 148,
                   child: Wrap(
                     direction: Axis.horizontal,
                     children: List.generate(
-                      data['MyHoldings'].length < 5
+                      data['matches'].length < 5
                           ? 4
-                          : min(data['MyHoldings'].length, 8),
+                          : min(data['matches'].length, 8),
                       (index) {
-                        if (data['MyHoldings'].length == 0) {
+                        if (data['matches'].length == 0) {
                           if (index == 0) {
                             return Center(
                               child: Text(
@@ -57,8 +60,8 @@ class HomeTabPan extends ConsumerWidget {
                                   width: 40,
                                 ));
                           }
-                        } else if (data['MyHoldings'].length < 4) {
-                          if ((index + 1) > data['MyHoldings'].length) {
+                        } else if (data['matches'].length < 4) {
+                          if ((index + 1) > data['matches'].length) {
                             return const Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 18.0, vertical: 12),
@@ -66,18 +69,21 @@ class HomeTabPan extends ConsumerWidget {
                                   width: 40,
                                 ));
                           } else {
-                            final coinSmallName = data['MyHoldings'][index][0];
-                            final coinImage = data['MyHoldings'][index][1];
+                            final coinSmallName =
+                                data['matches'][index]['team1logo'];
+                            final coinImage =
+                                data['matches'][index]['team2logo'];
                             return MyyHoldingSmallTileBuilder(
-                              image: 'https://www.$coinImage',
+                              image: coinImage,
                               shortname: coinSmallName,
                             );
                           }
                         } else {
-                          final coinSmallName = data['MyHoldings'][index][0];
-                          final coinImage = data['MyHoldings'][index][1];
+                          final coinSmallName =
+                              data['matches'][index]['team1display'];
+                          final coinImage = data['matches'][index]['team2logo'];
                           return MyyHoldingSmallTileBuilder(
-                            image: 'https://www.$coinImage',
+                            image: coinImage,
                             shortname: coinSmallName,
                           );
                         }

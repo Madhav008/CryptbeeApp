@@ -5,7 +5,6 @@ import 'package:cryptbee/Routing/route_names.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/auth_heading.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/email_text_area.dart';
-import 'package:cryptbee/Screens/Utilities/Widgets/forget_password_button.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/form_errors.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/log_in_button.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/logo_with_name.dart';
@@ -66,7 +65,6 @@ class SignInPage extends ConsumerWidget {
               passwordField,
               const SizedBox(height: 4),
               passError,
-              const ForgetPasswordButton(),
               const SizedBox(height: 16),
               LogInButton(
                 text: "Login",
@@ -92,8 +90,7 @@ class SignInPage extends ConsumerWidget {
 
                         context.goNamed(RouteNames.homePage);
                       } else {
-                        signInPasswordErrorNotifer
-                            .setVal(response[response.keys.first][0]);
+                        signInPasswordErrorNotifer.setVal(response['message']);
                       }
                     }
                   }

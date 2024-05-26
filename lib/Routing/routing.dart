@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cryptbee/Routing/route_names.dart';
 import 'package:cryptbee/Screens/AuthScreens/sign_in_page.dart';
 import 'package:cryptbee/Screens/AuthScreens/sign_up_page.dart';
-import 'package:cryptbee/Screens/AuthScreens/mail_opener.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/change_password.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/profile_pan.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/security.dart';
@@ -42,19 +41,7 @@ class AppRouter {
             child: SignUpPage(),
           );
         },
-        routes: [
-          GoRoute(
-            name: RouteNames.mailOpener,
-            path: 'mailopener/:email',
-            pageBuilder: (context, state) {
-              return MaterialPage(
-                child: MailOpener(
-                  email: state.pathParameters['email']!,
-                ),
-              );
-            },
-          ),
-        ],
+        
       ),
       GoRoute(
         name: RouteNames.homePage,

@@ -1,48 +1,66 @@
-import 'package:cryptbee/Config/websocket_integration.dart';
 import 'package:cryptbee/Models/coin_model.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/invest_coin_tile_builder.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/auth_heading.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/cypto_news_item_builder.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/my_holding_small_tile_builder.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 
 class InvestTabAll extends ConsumerWidget {
   const InvestTabAll({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allCoinsAsyncValue = ref.watch(allCoinsSocketProvider);
-    return allCoinsAsyncValue.when(
-      data: (data) {
-        data = data['data'];
-        return ListView.builder(
-          itemCount: data.length + 1,
-          itemBuilder: (context, index) {
-            return ((index) != (data.length))
-                ? InvestCoinTileBuilder(
+    final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
+    ref.invalidate(getHoldingsProvider);
+
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
+          child: Text(
+            'IPO Script List',
+            style: TextStyle(
+              color: Palette.secondaryWhiteColor,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Expanded(
+          child: allCoinsAsyncValue.when(
+            data: (data) {
+              return ListView.builder(
+                itemCount: data['ipos'].length,
+                itemBuilder: (context, index) {
+                  return InvestCoinTileBuilder(
                     coin: Coin(
-                      fullName: data[index]['FullName'],
-                      shortForm: data[index]['Name'],
-                      image: "https://www.${data[index]['ImageURL']}",
-                      price: data[index]['Price'],
-                      changePercent: data[index]['ChangePct'],
+                      fullName: data['ipos'][index]['fullName'],
+                      shortForm: data['ipos'][index]['shortForm'],
+                      image: data['ipos'][index]['image'],
+                      price: data['ipos'][index]['price'] + 0.0,
+                      changePercent: data['ipos'][index]['changePercent'] + 0.0,
                     ),
-                  )
-                : Container(
-                    height: 84,
                   );
-          },
-        );
-      },
-      error: (error, stackTrace) {
-        return Center(
-            child: Text(
-          error.toString(),
-          style: headlineLarge(),
-        ));
-      },
-      loading: () => const Center(
-        child: CircularProgressIndicator(color: Palette.primaryColor),
-      ),
+                },
+              );
+            },
+            error: (error, stackTrace) {
+              return Center(
+                  child: Text(
+                error.toString(),
+                style: headlineLarge(),
+              ));
+            },
+            loading: () => const Center(
+              child: CircularProgressIndicator(color: Palette.primaryColor),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

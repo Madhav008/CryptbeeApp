@@ -4,8 +4,8 @@ class RouteNames {
   static const String onBoarding = "onboarding";
   static const String signIn = "signin";
   static const String signUp = "signup";
-  static const String forgetPassword = "forgetpassword";
-  static const String forgetpassOTP = "forgetpassotp";
+  // static const String forgetPassword = "forgetpassword";
+  // static const String forgetpassOTP = "forgetpassotp";
   static const String setPassword = "setpassword";
   static const String phoneNumber = "phoneNumber";
   static const String phoneNumberOTP = "phoneNumberOTP";

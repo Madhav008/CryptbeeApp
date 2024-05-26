@@ -13,11 +13,10 @@ class InvestTabTopNav extends ConsumerWidget {
       child: SizedBox(
         height: 40,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            InvestTopNavItemGenerator(text: "All", index: 0),
-            InvestTopNavItemGenerator(text: "My Holdings", index: 1),
-            InvestTopNavItemGenerator(text: "Watchlist", index: 2),
+            InvestTopNavItemGenerator(text: "My Holdings", index: 0),
+            InvestTopNavItemGenerator(text: "Watchlist", index: 1),
           ],
         ),
       ),

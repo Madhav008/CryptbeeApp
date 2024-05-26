@@ -53,7 +53,7 @@ class BuyCoinPopup extends ConsumerWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "Current Price     ₹${data['Price'].toStringAsFixed(4)}",
+                      "Current Price     ₹${data['price'].toStringAsFixed(2)}",
                       style: bodyLarge(),
                     ),
                     const SizedBox(height: 30),
@@ -102,7 +102,7 @@ class BuyCoinPopup extends ConsumerWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "Total Coins   ${((ref.watch(coinPageCoinControllerProvider) ?? 1) / (data['Price'])).toStringAsFixed(6)}",
+                      "Total Coins   ${((ref.watch(coinPageCoinControllerProvider) ?? 1) / (data['price'])).toStringAsFixed(2)}",
                       style: bodyLarge(),
                     ),
                     const SizedBox(height: 20),

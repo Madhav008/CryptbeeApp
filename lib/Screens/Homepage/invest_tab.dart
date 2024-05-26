@@ -29,8 +29,4 @@ class InvestTab extends ConsumerWidget {
   }
 }
 
-List<Widget> investTabWidgets = [
-  const InvestTabAll(),
-  InvestTabMyHoldings(),
-  InvestTabWatchlist()
-];
+List<Widget> investTabWidgets = [InvestTabMyHoldings(), InvestTabWatchlist()];

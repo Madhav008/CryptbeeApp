@@ -15,7 +15,7 @@ class WalletTab extends ConsumerWidget {
       child: Column(
         children: [
           SizedBox(
-            child: ref.watch(walletSocketProvider).when(
+            child: ref.watch(getWalletProvider).when(
                   data: (data) {
                     return Column(
                       children: [
@@ -23,17 +23,14 @@ class WalletTab extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                (data['wallet'] +
-                                            data['holdings_value'] -
-                                            10000) >
-                                        0
+                                (data['balance']) > 0
                                     ? "Total Profit"
                                     : "Total Loss",
                                 style: headlineSmall(
                                   fontColor: Palette.primaryColor,
                                 )),
                             Text(
-                              "₹ ${(data['wallet'] + data['holdings_value'] - 10000).toStringAsFixed(2)}",
+                              "₹ ${(data['balance'].toStringAsFixed(2))}",
                               style: headlineSmall(),
                             ),
                           ],
@@ -52,7 +49,7 @@ class WalletTab extends ConsumerWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "₹ ${data['wallet'].toStringAsFixed(4)} ",
+                            "₹ ${data['balance'].toStringAsFixed(4)} ",
                             style: headlineLarge(),
                           ),
                         ),
@@ -68,7 +65,7 @@ class WalletTab extends ConsumerWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "₹ ${data['total'].toStringAsFixed(2)} ",
+                            "₹ ${data['balance'].toStringAsFixed(2)} ",
                             style: headlineLarge(),
                           ),
                         ),

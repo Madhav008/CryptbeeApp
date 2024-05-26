@@ -11,6 +11,12 @@ class Links {
   static const String changePasswordLink = "profile/changepassword/";
   static const String updateProfilePhoto = "profile/profile_picture/";
   static const String userDetails = "auth/user";
+  static const String holdingApiLink = "ipo/list/";
+  static const String coinDetailsLink = "ipo/ipodetails/";
+  static const String walletLink = "wallet/getbalance/";
+  static const String transactionLink = "wallet/gettransactions/";
+  static const String buyCoinLink = "invest/buy/";
+  static const String sellCoinLink = "invest/sell/";
   // static const String resetPassLink = "auth/resetpassword/";
   // static const String newTwoFactor = "profile/newtwofactor/";
   // static const String verifyTwoFactor = "profile/verifytwofactor/";
@@ -19,11 +25,6 @@ class Links {
   // static const String panLink = "profile/verifyPAN/";
   // static const String enableTwoFactor = "profile/enabletwofactor/";
   // static const String newsLink = "invest/news/";
-  static const String holdingApiLink = "invest/myholdings/";
   static const String inWatchlist = "invest/inwatchlist/?coin=";
   static const String modifyWatchlist = "invest/mywatchlist/";
-  static const String coinDetailsLink = "invest/coindetails/?coin=";
-  static const String transactionLink = "invest/transactions/";
-  static const String buyCoinLink = "invest/buy/";
-  static const String sellCoinLink = "invest/sell/";
 }

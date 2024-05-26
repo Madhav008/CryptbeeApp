@@ -327,6 +327,9 @@ final profileTabBlurLoaderProvider =
 });
 
 //COIN PAGE
+final getCoinDetailProvider = FutureProvider<dynamic>((ref) async {
+  return ApiCalls.getCoinDetails();
+});
 
 WatchListBool inWatchListBoolNotifier = WatchListBool();
 
@@ -393,6 +396,10 @@ final securitySwitchProvider =
 });
 
 //WALLET
+
+final getWalletProvider = FutureProvider<dynamic>((ref) async {
+  return ApiCalls.getWallet();
+});
 
 final transactionsProvider = FutureProvider<dynamic>((ref) async {
   return ApiCalls.getTransactions();

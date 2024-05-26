@@ -3,7 +3,6 @@
 import 'dart:developer';
 import 'dart:ui';
 import 'package:cryptbee/Config/api_integration.dart';
-import 'package:cryptbee/Config/websocket_integration.dart';
 import 'package:cryptbee/Models/coin_model.dart';
 import 'package:cryptbee/Routing/route_names.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
@@ -23,7 +22,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allCoinsAsyncValue = ref.watch(allCoinsSocketProvider);
+    final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
     return allCoinsAsyncValue.when(
       data: (data) {
         data = data['holdings'];

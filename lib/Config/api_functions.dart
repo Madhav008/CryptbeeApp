@@ -10,13 +10,13 @@ import 'package:toast/toast.dart';
 const String noInternet = "App_Error:No_Internet";
 
 Future<void> saveData(Map response, bool all) async {
-  log("saving response of $response ");
+  print("saving response of $response ");
   final prefs = await SharedPreferences.getInstance();
 
   if (response.containsKey('access')) {
     prefs.setString('access', response['access']);
     App.acesss = response['access'];
-    log("saving access of ${response['access']} ");
+    print("saving access of ${response['access']} ");
   }
 
   if (response.containsKey('refresh')) {
@@ -81,13 +81,18 @@ Future<void> saveData(Map response, bool all) async {
 Future initAuth() async {
   final prefs = await SharedPreferences.getInstance();
   if (prefs.containsKey('access')) {
-    String access = prefs.getString('access')!;
+    String? access = prefs.getString('access');
     // if (JwtDecoder.isExpired(access)) {
     //   await ApiCalls.renewToken();
     // }
-    await appInstanceInit();
-    await ApiCalls.getUserDetails();
-    App.isLoggedIn = true;
+    if (access != null) {
+      print(access);
+      await appInstanceInit();
+      await ApiCalls.getUserDetails();
+      App.isLoggedIn = true;
+    } else {
+      App.isLoggedIn = false;
+    }
   } else {
     App.isLoggedIn = false;
   }
