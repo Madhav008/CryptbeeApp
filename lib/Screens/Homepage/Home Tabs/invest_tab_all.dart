@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/auth_heading.dart';
-import 'package:cryptbee/Screens/Utilities/Widgets/cypto_news_item_builder.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/my_holding_small_tile_builder.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 
@@ -15,7 +14,6 @@ class InvestTabAll extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
-    ref.invalidate(getHoldingsProvider);
 
     return Column(
       children: [

@@ -51,42 +51,43 @@ class Security extends ConsumerWidget {
                     const SizedBox(height: 26),
                     Container(
                       width: MediaQuery.of(context).size.width - 32,
-                      height: MediaQuery.of(context).size.height - 92,
                       decoration: const BoxDecoration(
                         color: Palette.neutralBlack,
                         borderRadius: BorderRadius.all(
                           Radius.circular(20),
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 63),
-                          authTitleLargeText("Security"),
-                          const SizedBox(height: 34),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 24, horizontal: 16),
-                            child: Column(
-                              children: [
-                                const SecurityTileBuilder(
-                                  text: "Change Password",
-                                  route: RouteNames.changePassword,
-                                ),
-                                SecurityTileBuilder(
-                                  text: "Logout",
-                                  function: () async {
-                                    log("asdad");
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.clear();
-                                    App.isLoggedIn = false;
-                                    context.goNamed(RouteNames.root);
-                                  },
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            authTitleLargeText("Security"),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 24, horizontal: 16),
+                              child: Column(
+                                children: [
+                                  const SecurityTileBuilder(
+                                    text: "Change Password",
+                                    route: RouteNames.changePassword,
+                                  ),
+                                  SecurityTileBuilder(
+                                    text: "Logout",
+                                    function: () async {
+                                      log("asdad");
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.clear();
+                                      App.isLoggedIn = false;
+                                      context.goNamed(RouteNames.root);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],

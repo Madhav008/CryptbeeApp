@@ -2,6 +2,7 @@ import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class HomeBottomNavBar extends ConsumerWidget {
   const HomeBottomNavBar({super.key});
 
@@ -25,7 +26,7 @@ class HomeBottomNavBar extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: bottomnavbaritems(page),
+              children: bottomnavbaritems(page, ref),
             ),
           ),
         ),
@@ -34,7 +35,7 @@ class HomeBottomNavBar extends ConsumerWidget {
   }
 }
 
-List<Widget> bottomnavbaritems(int page) {
+List<Widget> bottomnavbaritems(int page, WidgetRef ref) {
   return [
     InkWell(
       onTap: () {
@@ -79,6 +80,7 @@ List<Widget> bottomnavbaritems(int page) {
     InkWell(
       onTap: () {
         homeBottomNavNotifier.setPage(2);
+        ref.invalidate(getWalletProvider);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

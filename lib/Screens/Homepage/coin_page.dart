@@ -28,57 +28,27 @@ class CoinPage extends ConsumerStatefulWidget {
 
 class _CoinPageState extends ConsumerState<CoinPage> {
   @override
-  void initState() {
-    print(widget.shortName);
-    // ApiCalls.inWatchlist(widget.shortName).then((value) {
-    //   log(value.toString());
-    //   inWatchListBoolNotifier.setBool(value);
-    // });
-    ApiCalls.getCoinDetails().then((value) {
-      coinPageCoinDescNotifier.setVal(value['info']);
-    });
-    // ref.listenManual(
-    //   getHoldingsProvider,
-    //   (previous, next) {
-    //     {
-    //       next.whenData(
-    //         (value) {
-    //           var data = value['data'];
-    //           if (widget.chartData.length < 10) {
-    //             widget.chartData = [
-    //               ...widget.chartData,
-    //               CoinData(DateTime.now(), data['Price'])
-    //             ];
-    //           } else {
-    //             widget.chartData.add(CoinData(DateTime.now(), data['Price']));
-    //             widget.chartData.removeAt(0);
-    //           }
-    //           if (widget.chartSeriesController != null) {
-    //             if (widget.chartData.length >= 10) {
-    //               widget.chartSeriesController!.updateDataSource(
-    //                   addedDataIndex: widget.chartData.length - 1,
-    //                   removedDataIndex: 0);
-    //             } else {
-    //               widget.chartSeriesController!.updateDataSource(
-    //                   addedDataIndex: widget.chartData.length - 1);
-    //             }
-    //           }
-    //         },
-    //       );
-    //     }
-    //   },
-    // );
-    super.initState();
+
+  void _parseChartData(List<dynamic> chart) {
+    widget.chartData = chart.map((data) {
+      return CoinData(DateTime.parse(data['date']), data['price'].toDouble());
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     App.currentCoin = widget.shortName;
     final singleCoinsAsyncValue = ref.watch(getCoinDetailProvider);
+
     return singleCoinsAsyncValue.when(
       data: (data) {
         data = data['data'];
-        print(data);
+        // Parse the chart data
+        widget.chartData = (data['chart'] as List<dynamic>).map((chartItem) {
+          final date = DateTime.parse(chartItem['date']);
+          final price = chartItem['price'].toDouble();
+          return CoinData(date, price);
+        }).toList();
         return Scaffold(
           backgroundColor: Palette.secondaryBlackColor,
           body: SingleChildScrollView(

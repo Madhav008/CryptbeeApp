@@ -78,7 +78,6 @@ class ProfilePan extends ConsumerWidget {
                     const SizedBox(height: 26),
                     Container(
                       width: MediaQuery.of(context).size.width - 32,
-                      height: MediaQuery.of(context).size.height - 92,
                       decoration: const BoxDecoration(
                         color: Palette.neutralBlack,
                         borderRadius: BorderRadius.all(
@@ -107,21 +106,25 @@ class ProfilePan extends ConsumerWidget {
                           panArea,
                           panErrorLines,
                           const SizedBox(height: 12),
-                          Center(
-                            child: SizedBox(
-                              height: 48,
-                              child: LogInButton(
-                                text: "Save",
-                                function: () async {
-                                  ToastContext().init(context);
-                                  if (!(nameErrorMsg == "" &&
-                                      panErrorMsg == "")) {
-                                    if (nameErrorMsg != "Enter Valid Name") {}
-                                  } else {
-                                    panNumberPanErrorNotifier.setVal(
-                                        "Enter either Name or Pan to Proceed");
-                                  }
-                                },
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16.0),
+                            child: Center(
+                              child: SizedBox(
+                                height: 48,
+                                child: LogInButton(
+                                  text: "Save",
+                                  function: () async {
+                                    ToastContext().init(context);
+                                    if (!(nameErrorMsg == "" &&
+                                        panErrorMsg == "")) {
+                                      if (nameErrorMsg != "Enter Valid Name") {}
+                                    } else {
+                                      panNumberPanErrorNotifier.setVal(
+                                          "Enter either Name or Pan to Proceed");
+                                    }
+                                  },
+                                ),
                               ),
                             ),
                           ),

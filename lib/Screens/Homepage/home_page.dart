@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:cryptbee/Screens/Homepage/Home%20Tabs/home_tab_pan.dart';
-import 'package:cryptbee/Screens/Homepage/Invest%20Pages/invest_tab_all.dart';
+import 'package:cryptbee/Screens/Homepage/Home%20Tabs/invest_tab_all.dart';
 import 'package:cryptbee/Screens/Homepage/Profile/profile_tab.dart';
 import 'package:cryptbee/Screens/Homepage/wallet_tab.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';

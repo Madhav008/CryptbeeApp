@@ -1,4 +1,3 @@
-import 'package:cryptbee/Config/websocket_integration.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/transaction_history_builder.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
@@ -10,6 +9,7 @@ class WalletTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // ref.invalidate(getWalletProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(

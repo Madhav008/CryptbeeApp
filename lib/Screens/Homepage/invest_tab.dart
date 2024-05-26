@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:cryptbee/Screens/Homepage/Invest%20Pages/invest_tab_all.dart';
+import 'package:cryptbee/Screens/Homepage/Home%20Tabs/invest_tab_all.dart';
 import 'package:cryptbee/Screens/Homepage/Invest%20Pages/invest_tab_my_holding.dart';
 import 'package:cryptbee/Screens/Homepage/Invest%20Pages/invest_tab_watchlist.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
