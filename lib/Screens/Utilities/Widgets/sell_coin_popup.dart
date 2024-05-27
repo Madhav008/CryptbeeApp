@@ -14,9 +14,9 @@ import 'package:toast/toast.dart';
 
 import '../Riverpod/riverpod_variables.dart';
 
-class BuyCoinPopup extends ConsumerWidget {
+class SellCoinPopup extends ConsumerWidget {
   dynamic data;
-  BuyCoinPopup({super.key, required this.data});
+  SellCoinPopup({super.key, required this.data});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -108,11 +108,11 @@ class BuyCoinPopup extends ConsumerWidget {
                       const SizedBox(height: 20),
                       BuySellButton(
                         loaderProvider: coinPageButtonLoaderProvider,
-                        text: "Buy",
+                        text: "Sell",
                         height: 50,
                         function: () async {
                           coinPageButtonLoaderNotifier.toggle();
-                          final output = await ApiCalls.buyCoin(
+                          final output = await ApiCalls.sellCoin(
                               ref.watch(coinPageCoinControllerProvider) ?? 1,
                               data['price'],
                               data['_id']);

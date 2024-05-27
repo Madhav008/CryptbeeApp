@@ -1,11 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cryptbee/Config/api_integration.dart';
 import 'package:cryptbee/Routing/route_names.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/but_sell_button.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/buy_coin_popup.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/sell_coin_popup.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:cryptbee/Screens/Utilities/Widgets/auth_heading.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/log_in_button.dart';
@@ -28,7 +29,6 @@ class CoinPage extends ConsumerStatefulWidget {
 
 class _CoinPageState extends ConsumerState<CoinPage> {
   @override
-
   void _parseChartData(List<dynamic> chart) {
     widget.chartData = chart.map((data) {
       return CoinData(DateTime.parse(data['date']), data['price'].toDouble());
@@ -199,19 +199,47 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                           ),
                         ),
                         Expanded(
-                          child: Center(
-                              child: LogInButton(
-                                  text: "Buy Now",
-                                  function: () {
-                                    coinPagePopupNotifier.toggle();
-                                  })),
-                        )
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  child: BuySellButton(
+                                    text: "Buy",
+                                    height: 50,
+                                    function: () {
+                                      coinPagePopupNotifier.buy();
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: BuySellButton(
+                                    text: "Sell",
+                                    height: 50,
+                                    function: () {
+                                      coinPagePopupNotifier.sell();
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ))
                       ],
                     ),
                   ),
-                  ref.watch(coinPagePopUpProvider)
+                  ref.watch(coinPagePopUpProvider) == 'buy'
                       ? BuyCoinPopup(data: data)
-                      : const SizedBox()
+                      : (ref.watch(coinPagePopUpProvider) == 'sell'
+                          ? SellCoinPopup(data: data)
+                          : const SizedBox())
                 ],
               ),
             ),

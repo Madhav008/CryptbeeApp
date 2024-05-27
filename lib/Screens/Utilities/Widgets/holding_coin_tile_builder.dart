@@ -74,6 +74,22 @@ Widget holdingCoinTileBuilder(Coin coin, int index) {
                           coin.holding!.toStringAsFixed(2),
                           style: bodyMedium(fontColor: Palette.primaryColor),
                         ),
+                        Row(
+                          children: [
+                            coin.changePercent! > 0
+                                ? const Icon(Icons.arrow_upward_rounded,
+                                    color: Palette.secondaryCorrectColor)
+                                : const Icon(Icons.arrow_downward_rounded,
+                                    color: Palette.secondaryErrorColor),
+                            Text(
+                              "${coin.changePercent!.toStringAsFixed(2)} %",
+                              style: bodyMedium(
+                                  fontColor: coin.changePercent! > 0
+                                      ? Palette.secondaryCorrectColor
+                                      : Palette.secondaryErrorColor),
+                            ),
+                          ],
+                        ),
                         BuySellButton(
                           text: "Close",
                           width: 112,
@@ -85,7 +101,7 @@ Widget holdingCoinTileBuilder(Coin coin, int index) {
                         )
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             )

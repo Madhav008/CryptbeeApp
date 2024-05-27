@@ -192,10 +192,27 @@ class SecuritySwitch extends StateNotifier<bool> {
 
 class PopupNotifier extends StateNotifier<bool> {
   PopupNotifier() : super(false);
-
   void toggle() {
     log("bool pagepop");
     state = !state;
+  }
+}
+
+class CoinPagePopupNotifier extends StateNotifier<String> {
+  CoinPagePopupNotifier() : super("");
+  void buy() {
+    log("bool pagepop");
+    state = "buy";
+  }
+
+  void sell() {
+    log("bool pagepop");
+    state = "sell";
+  }
+
+  void close() {
+    log("bool pagepop");
+    state = "";
   }
 }
 

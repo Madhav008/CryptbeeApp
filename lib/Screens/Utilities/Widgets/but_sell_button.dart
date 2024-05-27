@@ -13,11 +13,13 @@ class BuySellButton extends ConsumerWidget {
       loaderProvider;
   bool isloading = false;
   final double? width;
+  final double? height;
   BuySellButton(
       {super.key,
       required this.text,
       this.function,
       this.loaderProvider,
+      this.height,
       this.width});
 
   @override
@@ -26,7 +28,7 @@ class BuySellButton extends ConsumerWidget {
     return !isloading
         ? SizedBox(
             width: width ?? MediaQuery.of(context).size.width,
-            height: 28,
+            height: height ?? 28,
             child: ElevatedButton(
                 onPressed: function,
                 style: ButtonStyle(

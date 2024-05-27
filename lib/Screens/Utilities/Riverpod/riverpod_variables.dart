@@ -239,6 +239,10 @@ final homeBottomNavProvider =
 
 //INVEST TAB
 
+final getOrdersProvider = FutureProvider<dynamic>((ref) async {
+  return ApiCalls.getUserOrders();
+});
+
 InvestTopNavNotifier investTopNavNotifier = InvestTopNavNotifier();
 
 final investTopNavProvider = StateNotifierProvider<InvestTopNavNotifier, int>(
@@ -353,12 +357,12 @@ final coinPageCoinControllerProvider =
   return coinPageCoinControllerNotifier;
 });
 
-PopupNotifier coinPagePopupNotifier = PopupNotifier();
+CoinPagePopupNotifier coinPagePopupNotifier = CoinPagePopupNotifier();
 
 final coinPagePopUpProvider =
-    StateNotifierProvider.autoDispose<PopupNotifier, bool>((ref) {
+    StateNotifierProvider.autoDispose<CoinPagePopupNotifier, String>((ref) {
   ref.onDispose(() {
-    coinPagePopupNotifier = PopupNotifier();
+    coinPagePopupNotifier = CoinPagePopupNotifier();
   });
   return coinPagePopupNotifier;
 });

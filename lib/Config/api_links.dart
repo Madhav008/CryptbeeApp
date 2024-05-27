@@ -1,6 +1,6 @@
 class Links {
-  static const String prefixLink = "https://test.fanxange.live/";
-  // static const String prefixLink = "http://192.168.1.66:3132/";
+  // static const String prefixLink = "https://test.fanxange.live/";
+  static const String prefixLink = "http://192.168.1.66:3132/";
   static const String signInLink = "auth/login/";
   static const String signUpLink = "auth/register/";
   // static const String verificationCheckerLink = "auth/verifyemailLINK/";
@@ -16,6 +16,8 @@ class Links {
   static const String transactionLink = "wallet/getusertransactions/";
   static const String buyCoinLink = "order/buy/";
   static const String sellCoinLink = "order/sell/";
+  static const String ordersList = "order/user";
+
   // static const String resetPassLink = "auth/resetpassword/";
   // static const String newTwoFactor = "profile/newtwofactor/";
   // static const String verifyTwoFactor = "profile/verifytwofactor/";

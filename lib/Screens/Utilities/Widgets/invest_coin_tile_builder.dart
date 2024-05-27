@@ -16,7 +16,7 @@ class InvestCoinTileBuilder extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 26),
       child: GestureDetector(
         onTap: () {
           App.currentCoin = coin.shortForm;
@@ -26,7 +26,7 @@ class InvestCoinTileBuilder extends ConsumerWidget {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-          height: 130,
+          height: 90,
           width: double.infinity,
           decoration: const BoxDecoration(
             color: Palette.secondaryBlackColor,
@@ -119,30 +119,30 @@ class InvestCoinTileBuilder extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BuySellButton(
-                            text: "Buy",
-                            width: 112,
-                            function: () {
-                              App.currentCoin = coin.shortForm;
-                              watchlistPopupNotifier.toggle();
-                            },
-                          ),
-                          BuySellButton(
-                            text: "Sell",
-                            width: 112,
-                            function: () {
-                              App.currentCoin = coin.shortForm;
-                              watchlistPopupNotifier.toggle();
-                            },
-                          )
-                        ],
-                      ),
-                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       BuySellButton(
+                    //         text: "Buy",
+                    //         width: 112,
+                    //         function: () {
+                    //           App.currentCoin = coin.shortForm;
+
+                    //         },
+                    //       ),
+                    //       BuySellButton(
+                    //         text: "Sell",
+                    //         width: 112,
+                    //         function: () {
+                    //           App.currentCoin = coin.shortForm;
+
+                    //         },
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               )

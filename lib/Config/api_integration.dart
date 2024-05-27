@@ -194,6 +194,32 @@ class ApiCalls {
     }
   }
 
+  static Future<dynamic> getUserOrders() async {
+    try {
+      Response response = await get(
+        Uri.parse(Links.prefixLink + Links.ordersList),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${App.acesss}'
+        },
+      );
+      if (response.statusCode == 401) {
+        await renewToken();
+        response = await get(
+          Uri.parse(Links.prefixLink + Links.ordersList),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${App.acesss}'
+          },
+        );
+      }
+      final output = jsonDecode(response.body);
+      return output;
+    } catch (e) {
+      log("$e");
+    }
+  }
+
   static Future<dynamic> getUserDetails() async {
     try {
       Response response = await get(
@@ -406,9 +432,9 @@ class ApiCalls {
     }
   }
 
-  static Future<dynamic> buyCoin(int buyAmount) async {
+  static Future<dynamic> buyCoin(int qty, int price, String stockId) async {
     try {
-      log("Began Coin Buy For ${App.currentCoin} + $buyAmount");
+      log("Began Coin Buy For ${App.currentCoin} + $qty");
       Response response = await post(
         Uri.parse(Links.prefixLink + Links.buyCoinLink),
         headers: <String, String>{
@@ -417,8 +443,9 @@ class ApiCalls {
         },
         body: jsonEncode(
           <String, dynamic>{
-            "coin_name": App.currentCoin,
-            "buy_amount": buyAmount
+            "stockId": stockId,
+            "quantity": qty,
+            "price": price,
           },
         ),
       );
@@ -433,8 +460,9 @@ class ApiCalls {
           },
           body: jsonEncode(
             <String, dynamic>{
-              "coin_name": App.currentCoin,
-              "buy_amount": buyAmount
+              "stockId": stockId,
+              "quantity": qty,
+              "price": price,
             },
           ),
         );
@@ -449,10 +477,10 @@ class ApiCalls {
     }
   }
 
-  static Future<dynamic> sellCoin(double sellQuantity, double price) async {
+  static Future<dynamic> sellCoin(int qty, int price, String stockId) async {
     try {
-      log("Began Coin Sell For ${App.currentCoin} + $sellQuantity +$price");
-      Response response = await patch(
+      log("Began Coin Sell For ${App.currentCoin} + $qty +$price");
+      Response response = await post(
         Uri.parse(Links.prefixLink + Links.sellCoinLink),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -460,9 +488,9 @@ class ApiCalls {
         },
         body: jsonEncode(
           <String, dynamic>{
-            "coin_name": App.currentCoin,
-            "sell_quantity": sellQuantity,
-            "price": price
+            "stockId": stockId,
+            "quantity": qty,
+            "price": price,
           },
         ),
       );
@@ -477,9 +505,9 @@ class ApiCalls {
           },
           body: jsonEncode(
             <String, dynamic>{
-              "coin_name": App.currentCoin,
-              "sell_quantity": sellQuantity,
-              "price": price
+              "stockId": stockId,
+              "quantity": qty,
+              "price": price,
             },
           ),
         );

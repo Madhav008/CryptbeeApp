@@ -22,10 +22,10 @@ class InvestTabMyHoldings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
+    final allCoinsAsyncValue = ref.watch(getOrdersProvider);
     return allCoinsAsyncValue.when(
       data: (data) {
-        data = data['ipos'];
+        data = data['orders'];
 
         return SingleChildScrollView(
           child: SizedBox(
@@ -36,6 +36,12 @@ class InvestTabMyHoldings extends ConsumerWidget {
                 ListView.builder(
                   itemCount: data.length + 1,
                   itemBuilder: (context, index) {
+                    var changePercent = data[index]['priceAtOrder'] == 0
+                        ? 0
+                        : ((data[index]['price'] -
+                                    data[index]['priceAtOrder']) /
+                                data[index]['priceAtOrder']) *
+                            100;
                     return ((index) == (data.length))
                         ? (index == 0)
                             ? SizedBox(
@@ -50,23 +56,16 @@ class InvestTabMyHoldings extends ConsumerWidget {
                             : Container(
                                 height: 84,
                               )
-                        : GestureDetector(
-                            onTap: () {
-                              context.goNamed(RouteNames.coinPage,
-                                  pathParameters: {
-                                    "shortName": App.currentCoin!
-                                  });
-                            },
-                            child: holdingCoinTileBuilder(
-                                Coin(
-                                  fullName: data[index]['fullName'],
-                                  shortForm: data[index]['shortForm'],
-                                  image: data[index]['image'],
-                                  price: data[index]['price'] + 0.0,
-                                  holding: 1,
-                                ),
-                                index),
-                          );
+                        : holdingCoinTileBuilder(
+                            Coin(
+                              fullName: data[index]['fullName'],
+                              shortForm: data[index]['shortForm'],
+                              image: data[index]['image'],
+                              price: data[index]['price'] + 0.0,
+                              holding: data[index]['quantity'] + 0.0,
+                              changePercent: changePercent + 0.0,
+                            ),
+                            index);
                   },
                 ),
                 ref.watch(holdingTabPopUpProvider)
@@ -178,11 +177,12 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                           holdingTabButtonLoaderNotifier
                                               .toggle();
 
-                                          final output = await ApiCalls.sellCoin(
-                                              ref.watch(
-                                                      holdingTabCoinControllerProvider) ??
-                                                  0,
-                                              data[App.holdingIndex]['price']);
+                                          final output = {};
+                                          // await ApiCalls.sellCoin(
+                                          //     ref.watch(
+                                          //             holdingTabCoinControllerProvider) ??
+                                          //         0,
+                                          //     data[App.holdingIndex]['price']);
 
                                           if (output['statusCode'] == 202) {
                                             holdingTabPopupNotifier.toggle;
