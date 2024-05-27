@@ -26,8 +26,9 @@ class InvestTabWatchlist extends ConsumerWidget {
     final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
     return allCoinsAsyncValue.when(
       data: (data) {
-        data = data['watchlist'];
-        log(data.toString());
+        data = data['ipos'];
+        print(data);
+
         return SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height - 194,
@@ -47,12 +48,11 @@ class InvestTabWatchlist extends ConsumerWidget {
                             },
                             child: WatchlistCoinTileBuilder(
                                 coin: Coin(
-                                  fullName: data[index]['FullName'],
-                                  shortForm: data[index]['Name'],
-                                  image:
-                                      "https://www.${data[index]['ImageURL']}",
-                                  price: data[index]['Price'],
-                                  changePercent: data[index]['ChangePct'],
+                                  fullName: data[index]['fullName'],
+                                  shortForm: data[index]['shortForm'],
+                                  image: data[index]['image'],
+                                  price: data[index]['price'] + 0.0,
+                                  holding: 1,
                                 ),
                                 index: index),
                           )

@@ -74,19 +74,15 @@ Widget holdingCoinTileBuilder(Coin coin, int index) {
                           coin.holding!.toStringAsFixed(2),
                           style: bodyMedium(fontColor: Palette.primaryColor),
                         ),
-                        User.panVerify ?? false
-                            ? BuySellButton(
-                                text: "Sell",
-                                width: 112,
-                                function: () {
-                                  App.holdingIndex = index;
-                                  App.currentCoin = coin.shortForm;
-                                  holdingTabPopupNotifier.toggle();
-                                },
-                              )
-                            : Container(
-                                width: 112,
-                              )
+                        BuySellButton(
+                          text: "Close",
+                          width: 112,
+                          function: () {
+                            App.holdingIndex = index;
+                            App.currentCoin = coin.shortForm;
+                            holdingTabPopupNotifier.toggle();
+                          },
+                        )
                       ],
                     ),
                   )

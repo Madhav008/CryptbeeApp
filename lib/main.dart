@@ -1,14 +1,11 @@
 import 'package:cryptbee/Routing/routing.dart';
 import 'package:cryptbee/Config/api_functions.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   await initAuth();
   FlutterNativeSplash.remove();
   runApp(const ProviderScope(child: MyApp()));
@@ -23,8 +20,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

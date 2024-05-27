@@ -81,6 +81,7 @@ List<Widget> bottomnavbaritems(int page, WidgetRef ref) {
       onTap: () {
         homeBottomNavNotifier.setPage(2);
         ref.invalidate(getWalletProvider);
+        ref.invalidate(transactionsProvider);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -80,43 +80,6 @@ class WatchlistCoinTileBuilder extends StatelessWidget {
                           )
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                coin.changePercent! > 0
-                                    ? const Icon(Icons.arrow_upward_rounded,
-                                        color: Palette.secondaryCorrectColor)
-                                    : const Icon(Icons.arrow_downward_rounded,
-                                        color: Palette.secondaryErrorColor),
-                                Text(
-                                  "${coin.changePercent!.toStringAsFixed(2)} %",
-                                  style: bodyMedium(
-                                      fontColor: coin.changePercent! > 0
-                                          ? Palette.secondaryCorrectColor
-                                          : Palette.secondaryErrorColor),
-                                ),
-                              ],
-                            ),
-                            User.panVerify ?? false
-                                ? BuySellButton(
-                                    text: "Buy",
-                                    width: 112,
-                                    function: () {
-                                      App.watchlistIndex = index;
-                                      App.currentCoin = coin.shortForm;
-                                      watchlistPopupNotifier.toggle();
-                                    },
-                                  )
-                                : Container(
-                                    width: 112,
-                                  )
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 )

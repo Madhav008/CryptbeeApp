@@ -1,0 +1,7 @@
+
+Version 1.0.0
+Features/Bugs Fixes:
+    1. Fixed the Unused code
+    2. Completed the backend integration
+    3. Completed the UI Work
+-------------------------------------------------------

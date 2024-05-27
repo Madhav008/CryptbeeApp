@@ -30,8 +30,11 @@ class BuySellButton extends ConsumerWidget {
             child: ElevatedButton(
                 onPressed: function,
                 style: ButtonStyle(
-                  backgroundColor:
-                      const MaterialStatePropertyAll(Palette.primaryColor),
+                  backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (states) => text == 'Sell'
+                        ? Palette.secondaryErrorColor
+                        : (text == 'Buy' ? Colors.green : Palette.primaryColor),
+                  ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

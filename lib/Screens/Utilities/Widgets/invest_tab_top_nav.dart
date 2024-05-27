@@ -16,7 +16,7 @@ class InvestTabTopNav extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             InvestTopNavItemGenerator(text: "My Holdings", index: 0),
-            InvestTopNavItemGenerator(text: "Watchlist", index: 1),
+            InvestTopNavItemGenerator(text: "History", index: 1),
           ],
         ),
       ),

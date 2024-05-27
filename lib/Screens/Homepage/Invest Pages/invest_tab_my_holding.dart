@@ -25,8 +25,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
     final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
     return allCoinsAsyncValue.when(
       data: (data) {
-        data = data['holdings'];
-        log(data.toString());
+        data = data['ipos'];
 
         return SingleChildScrollView(
           child: SizedBox(
@@ -43,7 +42,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                 height: 84,
                                 child: Center(
                                   child: Text(
-                                    "No Holdings Sadly   :C",
+                                    "No Holdings Sadly   :)",
                                     style: titleMedium(),
                                   ),
                                 ),
@@ -60,12 +59,11 @@ class InvestTabMyHoldings extends ConsumerWidget {
                             },
                             child: holdingCoinTileBuilder(
                                 Coin(
-                                  fullName: data[index]['FullName'],
-                                  shortForm: data[index]['Name'],
-                                  image:
-                                      "https://www.${data[index]['ImageURL']}",
-                                  price: data[index]['Price'],
-                                  holding: double.parse(data[index]['Coins']),
+                                  fullName: data[index]['fullName'],
+                                  shortForm: data[index]['shortForm'],
+                                  image: data[index]['image'],
+                                  price: data[index]['price'] + 0.0,
+                                  holding: 1,
                                 ),
                                 index),
                           );
@@ -73,23 +71,16 @@ class InvestTabMyHoldings extends ConsumerWidget {
                 ),
                 ref.watch(holdingTabPopUpProvider)
                     ? SizedBox(
-                        // height: MediaQuery.of(context).size.height - 168,
-                        // width: MediaQuery.of(context).size.width,
-
-                        height: double.infinity,
-                        width: double.infinity,
+                        height: 420,
+                        // width: double.infinity,
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Colors.grey.withOpacity(0.05)),
                             child: Center(
                               child: Container(
                                 color: Palette.secondaryBlackColor,
-                                width: 264,
-                                height: 362,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16),
@@ -109,12 +100,12 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                       ),
                                       const SizedBox(height: 9),
                                       Text(
-                                        "Do You Want To Sell",
+                                        "Do You Want To Close The Position?",
                                         style: titleMedium(),
                                       ),
                                       const SizedBox(height: 20),
                                       Text(
-                                        "Current Price     ₹${data[App.holdingIndex]['Price'].toStringAsFixed(4)}",
+                                        "Current Price     ₹${data[App.holdingIndex]['price']}",
                                         style: bodyLarge(),
                                       ),
                                       const SizedBox(height: 30),
@@ -175,14 +166,14 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                       ),
                                       const SizedBox(height: 20),
                                       Text(
-                                        "Total Cost   ₹${(data[App.holdingIndex]['Price'] * (ref.watch(holdingTabCoinControllerProvider) ?? 1)).toStringAsFixed(4)}",
+                                        "Total Cost   ₹${(data[App.holdingIndex]['price'] * (ref.watch(holdingTabCoinControllerProvider) ?? 1)).toStringAsFixed(4)}",
                                         style: bodyLarge(),
                                       ),
                                       const SizedBox(height: 20),
                                       LogInButton(
                                         loaderProvider:
                                             holdingTabButtonLoaderProvider,
-                                        text: "Sell",
+                                        text: "Close",
                                         function: () async {
                                           holdingTabButtonLoaderNotifier
                                               .toggle();
@@ -191,7 +182,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                               ref.watch(
                                                       holdingTabCoinControllerProvider) ??
                                                   0,
-                                              data[App.holdingIndex]['Price']);
+                                              data[App.holdingIndex]['price']);
 
                                           if (output['statusCode'] == 202) {
                                             holdingTabPopupNotifier.toggle;

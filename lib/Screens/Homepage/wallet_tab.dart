@@ -103,7 +103,8 @@ class WalletTab extends ConsumerWidget {
                   height: 332,
                   child: ref.watch(transactionsProvider).when(
                         data: (data) {
-                          data = data['transactions'];
+                          print(data);
+                          data = data['userTransactions'];
                           return ListView.builder(
                             itemCount: data.length + 1,
                             itemBuilder: (context, index) {

@@ -29,4 +29,7 @@ class InvestTab extends ConsumerWidget {
   }
 }
 
-List<Widget> investTabWidgets = [InvestTabMyHoldings(), InvestTabWatchlist()];
+List<Widget> investTabWidgets = [
+  InvestTabMyHoldings(),
+  InvestTabWatchlist(),
+];
