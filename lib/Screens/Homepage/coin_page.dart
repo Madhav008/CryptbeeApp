@@ -43,6 +43,7 @@ class _CoinPageState extends ConsumerState<CoinPage> {
     return singleCoinsAsyncValue.when(
       data: (data) {
         data = data['data'];
+        print(data);
         // Parse the chart data
         widget.chartData = (data['chart'] as List<dynamic>).map((chartItem) {
           final date = DateTime.parse(chartItem['date']);

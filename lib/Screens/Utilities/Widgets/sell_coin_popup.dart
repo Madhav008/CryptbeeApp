@@ -20,6 +20,8 @@ class SellCoinPopup extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final coinQuantity = ref.watch(coinPageCoinControllerProvider) ?? 0;
+
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Padding(
@@ -104,6 +106,33 @@ class SellCoinPopup extends ConsumerWidget {
                                   color: Palette.secondaryOffWhiteColor,
                                   width: 2)),
                         ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Brokerage",
+                            style: bodyLarge(),
+                          ),
+                          Text(
+                            "₹${coinQuantity < data['DiscountThreshold'] ? data['StandardCommissionRate'] : data['DiscountedCommissionRate']}",
+                            style: bodyLarge(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Total",
+                            style: bodyLarge(),
+                          ),
+                          Text(
+                            "₹${(coinQuantity * data['price']) + (coinQuantity < data['DiscountThreshold'] ? data['StandardCommissionRate'] : data['DiscountedCommissionRate'])}",
+                            style: bodyLarge(),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                       BuySellButton(

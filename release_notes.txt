@@ -1,4 +1,10 @@
 -------------------------------------------------------
+Version 1.2.0
+Features/Bugs Fixes:
+    1. show the comision in the popup 
+    2. show the transaction
+    3. close the orders
+-------------------------------------------------------
 Version 1.1.0
 Features/Bugs Fixes:
     1. Order Creation 

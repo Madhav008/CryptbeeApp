@@ -60,6 +60,7 @@ List<Widget> bottomnavbaritems(int page, WidgetRef ref) {
     InkWell(
       onTap: () {
         homeBottomNavNotifier.setPage(1);
+        ref.invalidate(getOrdersProvider);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

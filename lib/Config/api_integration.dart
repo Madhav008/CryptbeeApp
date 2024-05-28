@@ -523,4 +523,46 @@ class ApiCalls {
       log("$e");
     }
   }
+
+  static Future<dynamic> closeOrder(String orderId) async {
+    try {
+      Response response = await put(
+        Uri.parse(Links.prefixLink + Links.orderclose + orderId),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${App.acesss}'
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            "status": "Cancelled",
+          },
+        ),
+      );
+
+      if (response.statusCode == 401) {
+        await ApiCalls.renewToken();
+        response = await patch(
+          Uri.parse(Links.prefixLink + Links.sellCoinLink),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${App.acesss}'
+          },
+          body: jsonEncode(
+            <String, dynamic>{
+              "status": "Cancelled",
+            },
+          ),
+        );
+      }
+
+      final output = jsonDecode(response.body);
+      output['statusCode'] = response.statusCode;
+      log(response.statusCode.toString());
+
+      log(output.toString());
+      return output;
+    } catch (e) {
+      log("$e");
+    }
+  }
 }

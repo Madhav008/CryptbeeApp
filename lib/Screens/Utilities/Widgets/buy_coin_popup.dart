@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
 import 'dart:ui';
 
@@ -15,11 +13,13 @@ import 'package:toast/toast.dart';
 import '../Riverpod/riverpod_variables.dart';
 
 class BuyCoinPopup extends ConsumerWidget {
-  dynamic data;
+  final dynamic data;
   BuyCoinPopup({super.key, required this.data});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final coinQuantity = ref.watch(coinPageCoinControllerProvider) ?? 0;
+
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Padding(
@@ -38,13 +38,14 @@ class BuyCoinPopup extends ConsumerWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: IconButton(
-                            icon: const Icon(
-                              Icons.close_sharp,
-                              color: Palette.secondaryOffWhiteColor,
-                            ),
-                            onPressed: () {
-                              coinPagePopupNotifier.close();
-                            }),
+                          icon: const Icon(
+                            Icons.close_sharp,
+                            color: Palette.secondaryOffWhiteColor,
+                          ),
+                          onPressed: () {
+                            coinPagePopupNotifier.close();
+                          },
+                        ),
                       ),
                       const SizedBox(height: 9),
                       Text(
@@ -71,39 +72,71 @@ class BuyCoinPopup extends ConsumerWidget {
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           hintStyle: bodyMedium(),
                           labelText: "Quantity",
-                          hintText: "Enter the Quatity",
+                          hintText: "Enter the Quantity",
                           labelStyle: labelMedium(),
                           errorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  color: Palette.secondaryOffWhiteColor,
-                                  width: 2)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide(
+                              color: Palette.secondaryOffWhiteColor,
+                              width: 2,
+                            ),
+                          ),
                           enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  color: Palette.secondaryOffWhiteColor,
-                                  width: 2)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide(
+                              color: Palette.secondaryOffWhiteColor,
+                              width: 2,
+                            ),
+                          ),
                           disabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  color: Palette.secondaryOffWhiteColor,
-                                  width: 2)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide(
+                              color: Palette.secondaryOffWhiteColor,
+                              width: 2,
+                            ),
+                          ),
                           focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  color: Palette.secondaryOffWhiteColor,
-                                  width: 2)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide(
+                              color: Palette.secondaryOffWhiteColor,
+                              width: 2,
+                            ),
+                          ),
                           border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  color: Palette.secondaryOffWhiteColor,
-                                  width: 2)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            borderSide: BorderSide(
+                              color: Palette.secondaryOffWhiteColor,
+                              width: 2,
+                            ),
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Brokerage",
+                            style: bodyLarge(),
+                          ),
+                          Text(
+                            "₹${coinQuantity < data['DiscountThreshold'] ? data['StandardCommissionRate'] : data['DiscountedCommissionRate']}",
+                            style: bodyLarge(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Total",
+                            style: bodyLarge(),
+                          ),
+                          Text(
+                            "₹${(coinQuantity * data['price']) + (coinQuantity < data['DiscountThreshold'] ? data['StandardCommissionRate'] : data['DiscountedCommissionRate'])}",
+                            style: bodyLarge(),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                       BuySellButton(
@@ -113,25 +146,32 @@ class BuyCoinPopup extends ConsumerWidget {
                         function: () async {
                           coinPageButtonLoaderNotifier.toggle();
                           final output = await ApiCalls.buyCoin(
-                              ref.watch(coinPageCoinControllerProvider) ?? 1,
-                              data['price'],
-                              data['_id']);
+                            coinQuantity,
+                            data['price'],
+                            data['_id'],
+                          );
 
                           log(output.toString());
 
                           if (output['statusCode'] == 201) {
                             coinPagePopupNotifier.close();
                             ToastContext().init(context);
-                            Toast.show(output[output.keys.first],
-                                duration: 5, gravity: Toast.bottom);
+                            Toast.show(
+                              output[output.keys.first],
+                              duration: 5,
+                              gravity: Toast.bottom,
+                            );
                           } else {
                             ToastContext().init(context);
-                            Toast.show(output[output.keys.first],
-                                duration: 5, gravity: Toast.bottom);
+                            Toast.show(
+                              output[output.keys.first],
+                              duration: 5,
+                              gravity: Toast.bottom,
+                            );
                           }
                           coinPageButtonLoaderNotifier.toggle();
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),

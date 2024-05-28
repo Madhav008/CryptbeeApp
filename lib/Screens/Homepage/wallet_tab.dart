@@ -49,22 +49,6 @@ class WalletTab extends ConsumerWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "₹ ${data['balance'].toStringAsFixed(4)} ",
-                            style: headlineLarge(),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Total Standings",
-                            style: labelSmall(),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
                             "₹ ${data['balance'].toStringAsFixed(2)} ",
                             style: headlineLarge(),
                           ),

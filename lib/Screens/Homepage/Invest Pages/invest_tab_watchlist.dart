@@ -27,8 +27,6 @@ class InvestTabWatchlist extends ConsumerWidget {
     return allCoinsAsyncValue.when(
       data: (data) {
         data = data['ipos'];
-        print(data);
-
         return SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height - 194,

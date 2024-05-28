@@ -26,7 +26,6 @@ class InvestTabMyHoldings extends ConsumerWidget {
     return allCoinsAsyncValue.when(
       data: (data) {
         data = data['orders'];
-
         return SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height - 194,
@@ -34,7 +33,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
             child: Stack(
               children: [
                 ListView.builder(
-                  itemCount: data.length + 1,
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     var changePercent = data[index]['priceAtOrder'] == 0
                         ? 0
@@ -177,31 +176,25 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                           holdingTabButtonLoaderNotifier
                                               .toggle();
 
-                                          final output = {};
-                                          // await ApiCalls.sellCoin(
-                                          //     ref.watch(
-                                          //             holdingTabCoinControllerProvider) ??
-                                          //         0,
-                                          //     data[App.holdingIndex]['price']);
-
-                                          if (output['statusCode'] == 202) {
-                                            holdingTabPopupNotifier.toggle;
-
-                                            holdingTabButtonLoaderNotifier
-                                                .toggle();
+                                          final output =
+                                              await ApiCalls.closeOrder(
+                                                  data[App.holdingIndex]
+                                                      ['orderId']);
+                                          if (output['statusCode'] == 200) {
                                             ToastContext().init(context);
                                             Toast.show(
-                                                output[output.keys.first][0],
+                                                output[output.keys.first],
                                                 duration: 5,
                                                 gravity: Toast.bottom);
                                           } else {
                                             ToastContext().init(context);
                                             Toast.show(
-                                                output[output.keys.first][0],
+                                                output[output.keys.first],
                                                 duration: 5,
                                                 gravity: Toast.bottom);
                                           }
-                                          holdingTabPopupNotifier.toggle;
+                                          ref.invalidate(getOrdersProvider);
+                                          holdingTabPopupNotifier.toggle();
 
                                           holdingTabButtonLoaderNotifier
                                               .toggle();
