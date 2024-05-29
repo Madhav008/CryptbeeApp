@@ -37,6 +37,7 @@ class InvestTopNavItemGenerator extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         investTopNavNotifier.setPage(index);
+        ref.invalidate(getOrdersHistory);
       },
       child: SizedBox(
         height: 40,

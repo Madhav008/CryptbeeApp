@@ -219,7 +219,31 @@ class ApiCalls {
       log("$e");
     }
   }
-
+  static Future<dynamic> getUserHistory() async {
+    try {
+      Response response = await get(
+        Uri.parse(Links.prefixLink + Links.orderHistory),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${App.acesss}'
+        },
+      );
+      if (response.statusCode == 401) {
+        await renewToken();
+        response = await get(
+          Uri.parse(Links.prefixLink + Links.ordersList),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${App.acesss}'
+          },
+        );
+      }
+      final output = jsonDecode(response.body);
+      return output;
+    } catch (e) {
+      log("$e");
+    }
+  }
   static Future<dynamic> getUserDetails() async {
     try {
       Response response = await get(
@@ -239,113 +263,7 @@ class ApiCalls {
     }
   }
 
-  static Future<bool> inWatchlist(String coinSmallName) async {
-    try {
-      log("modify watchlist for $coinSmallName");
-      Response response = await get(
-        Uri.parse(Links.prefixLink + Links.inWatchlist + coinSmallName),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${App.acesss}'
-        },
-      );
-      if (response.statusCode == 401) {
-        await renewToken();
-        response = await get(
-          Uri.parse(Links.prefixLink + Links.inWatchlist + coinSmallName),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-        );
-      }
-      final output = jsonDecode(response.body);
-      log(output.toString());
-      return output['present'] ?? false;
-    } catch (e) {
-      log("$e");
-      return false;
-    }
-  }
 
-  static Future<dynamic> modifyWatchlist(String choice) async {
-    try {
-      log("modifing watchlist of ${App.currentCoin} by $choice");
-      if (choice == "add") {
-        Response response = await put(
-          Uri.parse(Links.prefixLink + Links.modifyWatchlist),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{
-              "add": true,
-              "watchlist": [App.currentCoin]
-            },
-          ),
-        );
-        if (response.statusCode == 401) {
-          await renewToken();
-          response = await put(
-            Uri.parse(Links.prefixLink + Links.modifyWatchlist),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer ${App.acesss}'
-            },
-            body: jsonEncode(
-              <String, dynamic>{
-                "add": true,
-                "watchlist": [App.currentCoin]
-              },
-            ),
-          );
-        }
-
-        final output = jsonDecode(response.body);
-        output['statusCode'] = response.statusCode;
-        log(output.toString());
-        return output;
-      } else {
-        Response response = await put(
-          Uri.parse(Links.prefixLink + Links.modifyWatchlist),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ${App.acesss}'
-          },
-          body: jsonEncode(
-            <String, dynamic>{
-              "remove": true,
-              "watchlist": [App.currentCoin]
-            },
-          ),
-        );
-        if (response.statusCode == 401) {
-          await renewToken();
-          response = await put(
-            Uri.parse(Links.prefixLink + Links.modifyWatchlist),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer ${App.acesss}'
-            },
-            body: jsonEncode(
-              <String, dynamic>{
-                "remove": true,
-                "watchlist": [App.currentCoin]
-              },
-            ),
-          );
-        }
-
-        final output = jsonDecode(response.body);
-        output['statusCode'] = response.statusCode;
-        log(output.toString());
-        return output;
-      }
-    } catch (e) {
-      log("$e");
-    }
-  }
 
   static Future<dynamic> getCoinDetails() async {
     try {

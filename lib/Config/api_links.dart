@@ -18,7 +18,7 @@ class Links {
   static const String sellCoinLink = "order/sell/";
   static const String ordersList = "order/user";
   static const String orderclose = "order/";
-
+  static const String orderHistory = "order/user/history";
 
   // static const String resetPassLink = "auth/resetpassword/";
   // static const String newTwoFactor = "profile/newtwofactor/";

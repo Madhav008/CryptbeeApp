@@ -39,7 +39,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
                         ? 0
                         : ((data[index]['price'] -
                                     data[index]['priceAtOrder']) /
-                                data[index]['priceAtOrder']) *
+                                data[index]['price']) *
                             100;
                     return ((index) == (data.length))
                         ? (index == 0)
@@ -60,9 +60,12 @@ class InvestTabMyHoldings extends ConsumerWidget {
                               fullName: data[index]['fullName'],
                               shortForm: data[index]['shortForm'],
                               image: data[index]['image'],
+                              type: data[index]['orderType'],
                               price: data[index]['price'] + 0.0,
                               holding: data[index]['quantity'] + 0.0,
                               changePercent: changePercent + 0.0,
+                              orderPrice: data[index]['priceAtOrder'] + 0.0,
+                              commision: data[index]['commissionPaid'] + 0.0,
                             ),
                             index);
                   },
@@ -99,7 +102,12 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                       const SizedBox(height: 9),
                                       Text(
                                         "Do You Want To Close The Position?",
-                                        style: titleMedium(),
+                                        style: titleSmall(),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        "Ordered Price     ₹${data[App.holdingIndex]['priceAtOrder']}",
+                                        style: bodyLarge(),
                                       ),
                                       const SizedBox(height: 20),
                                       Text(
@@ -107,64 +115,8 @@ class InvestTabMyHoldings extends ConsumerWidget {
                                         style: bodyLarge(),
                                       ),
                                       const SizedBox(height: 30),
-                                      TextFormField(
-                                        onChanged: (text) {
-                                          holdingTabCoinControllerNotifier
-                                              .setVal(text);
-                                        },
-                                        controller: controller,
-                                        keyboardType: TextInputType.number,
-                                        style: bodyMedium(),
-                                        decoration: InputDecoration(
-                                          counterText: "",
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always,
-                                          hintStyle: bodyMedium(),
-                                          labelText: "Amount",
-                                          hintText: "Enter the amount",
-                                          labelStyle: labelMedium(),
-                                          errorBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
-                                              borderSide: BorderSide(
-                                                  color: Palette
-                                                      .secondaryOffWhiteColor,
-                                                  width: 2)),
-                                          enabledBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
-                                              borderSide: BorderSide(
-                                                  color: Palette
-                                                      .secondaryOffWhiteColor,
-                                                  width: 2)),
-                                          disabledBorder:
-                                              const OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                  borderSide: BorderSide(
-                                                      color: Palette
-                                                          .secondaryOffWhiteColor,
-                                                      width: 2)),
-                                          focusedBorder: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
-                                              borderSide: BorderSide(
-                                                  color: Palette
-                                                      .secondaryOffWhiteColor,
-                                                  width: 2)),
-                                          border: const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
-                                              borderSide: BorderSide(
-                                                  color: Palette
-                                                      .secondaryOffWhiteColor,
-                                                  width: 2)),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
                                       Text(
-                                        "Total Cost   ₹${(data[App.holdingIndex]['price'] * (ref.watch(holdingTabCoinControllerProvider) ?? 1)).toStringAsFixed(4)}",
+                                        "Total Profit/Loss   ₹${(data[App.holdingIndex]['price'] - data[App.holdingIndex]['priceAtOrder']).toStringAsFixed(2)}",
                                         style: bodyLarge(),
                                       ),
                                       const SizedBox(height: 20),

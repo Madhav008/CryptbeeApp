@@ -155,23 +155,6 @@ class _CoinPageState extends ConsumerState<CoinPage> {
                                   ),
                                 ],
                               ),
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () {
-                                  if (ref.watch(inWatchlistBoolProvider)) {
-                                    ApiCalls.modifyWatchlist("remove");
-                                  } else {
-                                    ApiCalls.modifyWatchlist("add");
-                                  }
-                                  inWatchListBoolNotifier.toggle();
-                                },
-                                icon: Icon(
-                                  ref.watch(inWatchlistBoolProvider) ?? false
-                                      ? Icons.bookmark_sharp
-                                      : Icons.bookmark_border_sharp,
-                                  color: Palette.secondaryOffWhiteColor,
-                                ),
-                              )
                             ],
                           ),
                         ),

@@ -239,6 +239,10 @@ final homeBottomNavProvider =
 
 //INVEST TAB
 
+final getOrdersHistory = FutureProvider<dynamic>((ref) async {
+  return ApiCalls.getUserHistory();
+});
+
 final getOrdersProvider = FutureProvider<dynamic>((ref) async {
   return ApiCalls.getUserOrders();
 });

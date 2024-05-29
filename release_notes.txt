@@ -1,3 +1,16 @@
+Version 1.4.0
+Features/Bugs Fixes:
+    1. Show the transaction
+    2. Show the date of closed order
+-------------------------------------------------------
+Version 1.3.0
+Features/Bugs Fixes:
+    1. Show the Closed order in history tab
+    2. pic small 
+    3. Type of order text
+    4. Commision price and total price
+    5. Reset popup after close
+    6. Gap between text and close btn
 -------------------------------------------------------
 Version 1.2.0
 Features/Bugs Fixes:

@@ -23,10 +23,12 @@ class InvestTabWatchlist extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
+    final allCoinsAsyncValue = ref.watch(getOrdersHistory);
+    // ref.invalidate(getOrdersHistory);
     return allCoinsAsyncValue.when(
       data: (data) {
-        data = data['ipos'];
+        data = data['orders'];
+        print(data);
         return SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height - 194,
@@ -49,8 +51,11 @@ class InvestTabWatchlist extends ConsumerWidget {
                                   fullName: data[index]['fullName'],
                                   shortForm: data[index]['shortForm'],
                                   image: data[index]['image'],
-                                  price: data[index]['price'] + 0.0,
-                                  holding: 1,
+                                  type: data[index]['orderType'],
+                                  price: data[index]['priceAtOrder'] + 0.0,
+                                  holding: data[index]['quantity'] + 0.0,
+                                  closedPrice: data[index]['closedPrice'] + 0.0,
+                                  commision: data[index]['commissionPaid'] + 0.0,
                                 ),
                                 index: index),
                           )
