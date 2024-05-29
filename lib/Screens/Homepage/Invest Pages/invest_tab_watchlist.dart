@@ -52,10 +52,11 @@ class InvestTabWatchlist extends ConsumerWidget {
                                   shortForm: data[index]['shortForm'],
                                   image: data[index]['image'],
                                   type: data[index]['orderType'],
-                                  price: data[index]['priceAtOrder'] + 0.0,
                                   holding: data[index]['quantity'] + 0.0,
+                                  commision:data[index]['commissionPaid'] + 0.0,
+                                  price: data[index]['price'] + 0.0,
+                                  orderPrice: data[index]['priceAtOrder'] + 0.0,
                                   closedPrice: data[index]['closedPrice'] + 0.0,
-                                  commision: data[index]['commissionPaid'] + 0.0,
                                 ),
                                 index: index),
                           )

@@ -46,6 +46,7 @@ class SellCoinPopup extends ConsumerWidget {
                             ),
                             onPressed: () {
                               coinPagePopupNotifier.close();
+                              coinPageCoinControllerNotifier.setVal("1");
                             }),
                       ),
                       const SizedBox(height: 9),

@@ -6,24 +6,27 @@ import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 import 'package:cryptbee/Screens/Utilities/static_classes.dart';
 import 'package:flutter/material.dart';
 
-Widget holdingCoinTileBuilder(Coin coin, int index) {
-  final profit = (coin.price - coin.orderPrice!) * coin.holding!;
+Widget holdingCoinTileBuilder(Coin coin, int index, var data) {
   final commision = coin.commision! * (coin.holding ?? 0);
-  final totalPrice = coin.orderPrice! * (coin.holding ?? 0);
+  var profit = (coin.price - coin.orderPrice!) * coin.holding!;
+
+  final currentPrice = data[index]['price'];
+  if (coin.type == "Sell") {
+    profit = profit * -1;
+  }
+  var changePercent = coin.price == 0
+      ? 0
+      : ((coin.price - coin.orderPrice!) / coin.price) * 100;
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32),
     child: SizedBox(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: 32,
-              backgroundImage: CachedNetworkImageProvider(
-                coin.image,
-              ),
+          CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: 32,
+            backgroundImage: CachedNetworkImageProvider(
+              coin.image,
             ),
           ),
           Expanded(
@@ -48,19 +51,19 @@ Widget holdingCoinTileBuilder(Coin coin, int index) {
                         ),
                       ),
                       Text(
-                        "₹ ${totalPrice.toStringAsFixed(2)}",
+                        "LTP ₹ ${currentPrice.toStringAsFixed(2)}",
                         style: bodyLarge(),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        coin.type!,
+                        "${coin.type!} @ ${coin.orderPrice!}",
                         style: TextStyle(
                           fontSize: 15,
                           color: coin.type == "Buy"
@@ -96,7 +99,7 @@ Widget holdingCoinTileBuilder(Coin coin, int index) {
                               : const Icon(Icons.arrow_downward_rounded,
                                   color: Palette.secondaryErrorColor),
                           Text(
-                            "${profit.toStringAsFixed(2)} ( ${coin.changePercent!.toStringAsFixed(2)}% )",
+                            "${profit.toStringAsFixed(2)} ( ${changePercent!.toStringAsFixed(2)}% )",
                             style: bodyMedium(
                                 fontColor: profit! > 0
                                     ? Palette.secondaryCorrectColor
@@ -108,10 +111,17 @@ Widget holdingCoinTileBuilder(Coin coin, int index) {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text(
+                        "${coin.status}",
+                        style: bodyMedium(
+                            fontColor: coin.status == "Pending"
+                                ? Palette.secondaryErrorColor
+                                : Palette.secondaryCorrectColor),
+                      ),
                       BuySellButton(
                         text: "Close",
                         width: 112,

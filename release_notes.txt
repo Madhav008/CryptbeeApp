@@ -2,6 +2,11 @@ Version 1.4.0
 Features/Bugs Fixes:
     1. Show the transaction
     2. Show the date of closed order
+    3. Correct the brokrage according to the number of shares
+    4. Implement the wallet rs addition when order closed (
+        //invested +(p/l) = return amount
+        //1000 + 1000 = 2000
+    )
 -------------------------------------------------------
 Version 1.3.0
 Features/Bugs Fixes:

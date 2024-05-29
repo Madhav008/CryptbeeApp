@@ -28,6 +28,6 @@ class Links {
   // static const String panLink = "profile/verifyPAN/";
   // static const String enableTwoFactor = "profile/enabletwofactor/";
   // static const String newsLink = "invest/news/";
-  static const String inWatchlist = "invest/inwatchlist/?coin=";
-  static const String modifyWatchlist = "invest/mywatchlist/";
+  // static const String inWatchlist = "invest/inwatchlist/?coin=";
+  // static const String modifyWatchlist = "invest/mywatchlist/";
 }

@@ -17,7 +17,10 @@ class WatchlistCoinTileBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profit = (coin.closedPrice! - coin.price) * (coin?.holding ?? 0);
+    var profit = (coin.closedPrice! - coin.orderPrice!) * (coin?.holding ?? 0);
+    if (coin.type == "Sell") {
+      profit = profit * -1;
+    }
     final profitPercentage =
         ((profit / (coin.closedPrice! * (coin?.holding ?? 0))) * 100);
     final totalPrice = coin.closedPrice! * (coin.holding ?? 0);
@@ -57,8 +60,8 @@ class WatchlistCoinTileBuilder extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "₹ ${totalPrice.toStringAsFixed(2)}",
-                          style: bodyLarge(),
+                          "Closed @ ${totalPrice.toStringAsFixed(2)}",
+                          style: bodyMedium(),
                         ),
                       ],
                     ),
@@ -69,7 +72,7 @@ class WatchlistCoinTileBuilder extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          coin.type!,
+                          "${coin.type!} @ ${coin.orderPrice!}",
                           style: TextStyle(
                             fontSize: 15,
                             color: coin.type == "Buy"

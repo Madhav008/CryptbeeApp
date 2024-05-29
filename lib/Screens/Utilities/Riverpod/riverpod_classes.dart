@@ -242,6 +242,10 @@ class CoinControllerNotifier extends StateNotifier<int?> {
   void setVal(String val) {
     state = int.parse(val);
   }
+
+  void reset() {
+    state = null;
+  }
 }
 
 class HoldingCoinControllerNotifier extends StateNotifier<double?> {

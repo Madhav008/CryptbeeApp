@@ -14,7 +14,7 @@ class InvestTabAll extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allCoinsAsyncValue = ref.watch(getHoldingsProvider);
-
+    // ref.invalidate(getHoldingsProvider);
     return Column(
       children: [
         const Padding(

@@ -23,6 +23,7 @@ class InvestTabMyHoldings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allCoinsAsyncValue = ref.watch(getOrdersProvider);
+    ref.invalidate(getOrdersProvider);
     return allCoinsAsyncValue.when(
       data: (data) {
         data = data['orders'];
@@ -33,14 +34,8 @@ class InvestTabMyHoldings extends ConsumerWidget {
             child: Stack(
               children: [
                 ListView.builder(
-                  itemCount: data.length,
+                  itemCount: data.length + 1,
                   itemBuilder: (context, index) {
-                    var changePercent = data[index]['priceAtOrder'] == 0
-                        ? 0
-                        : ((data[index]['price'] -
-                                    data[index]['priceAtOrder']) /
-                                data[index]['price']) *
-                            100;
                     return ((index) == (data.length))
                         ? (index == 0)
                             ? SizedBox(
@@ -61,13 +56,13 @@ class InvestTabMyHoldings extends ConsumerWidget {
                               shortForm: data[index]['shortForm'],
                               image: data[index]['image'],
                               type: data[index]['orderType'],
+                              status: data[index]['status'],
                               price: data[index]['price'] + 0.0,
                               holding: data[index]['quantity'] + 0.0,
-                              changePercent: changePercent + 0.0,
                               orderPrice: data[index]['priceAtOrder'] + 0.0,
                               commision: data[index]['commissionPaid'] + 0.0,
                             ),
-                            index);
+                            index,data);
                   },
                 ),
                 ref.watch(holdingTabPopUpProvider)

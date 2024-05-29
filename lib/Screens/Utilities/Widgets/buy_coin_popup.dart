@@ -19,7 +19,8 @@ class BuyCoinPopup extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final coinQuantity = ref.watch(coinPageCoinControllerProvider) ?? 0;
-
+    print("COIN Quantity");
+    print(coinQuantity);
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Padding(
@@ -44,6 +45,7 @@ class BuyCoinPopup extends ConsumerWidget {
                           ),
                           onPressed: () {
                             coinPagePopupNotifier.close();
+                            coinPageCoinControllerNotifier.setVal("1");
                           },
                         ),
                       ),
@@ -146,7 +148,7 @@ class BuyCoinPopup extends ConsumerWidget {
                         function: () async {
                           coinPageButtonLoaderNotifier.toggle();
                           final output = await ApiCalls.buyCoin(
-                            coinQuantity,
+                            ref.watch(coinPageCoinControllerProvider) ?? 1,
                             data['price'],
                             data['_id'],
                           );
