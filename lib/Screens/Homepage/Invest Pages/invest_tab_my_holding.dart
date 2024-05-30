@@ -23,10 +23,11 @@ class InvestTabMyHoldings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allCoinsAsyncValue = ref.watch(getOrdersProvider);
-    ref.invalidate(getOrdersProvider);
+    // ref.invalidate(getOrdersProvider);
     return allCoinsAsyncValue.when(
       data: (data) {
         data = data['orders'];
+
         return SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height - 194,
@@ -62,99 +63,12 @@ class InvestTabMyHoldings extends ConsumerWidget {
                               orderPrice: data[index]['priceAtOrder'] + 0.0,
                               commision: data[index]['commissionPaid'] + 0.0,
                             ),
-                            index,data);
+                            index,
+                            data);
                   },
                 ),
                 ref.watch(holdingTabPopUpProvider)
-                    ? SizedBox(
-                        height: 420,
-                        // width: double.infinity,
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.05)),
-                            child: Center(
-                              child: Container(
-                                color: Palette.secondaryBlackColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Column(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: IconButton(
-                                            icon: const Icon(
-                                              Icons.close_sharp,
-                                              color: Palette
-                                                  .secondaryOffWhiteColor,
-                                            ),
-                                            onPressed: () {
-                                              holdingTabPopupNotifier.toggle();
-                                            }),
-                                      ),
-                                      const SizedBox(height: 9),
-                                      Text(
-                                        "Do You Want To Close The Position?",
-                                        style: titleSmall(),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        "Ordered Price     ₹${data[App.holdingIndex]['priceAtOrder']}",
-                                        style: bodyLarge(),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        "Current Price     ₹${data[App.holdingIndex]['price']}",
-                                        style: bodyLarge(),
-                                      ),
-                                      const SizedBox(height: 30),
-                                      Text(
-                                        "Total Profit/Loss   ₹${(data[App.holdingIndex]['price'] - data[App.holdingIndex]['priceAtOrder']).toStringAsFixed(2)}",
-                                        style: bodyLarge(),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      LogInButton(
-                                        loaderProvider:
-                                            holdingTabButtonLoaderProvider,
-                                        text: "Close",
-                                        function: () async {
-                                          holdingTabButtonLoaderNotifier
-                                              .toggle();
-
-                                          final output =
-                                              await ApiCalls.closeOrder(
-                                                  data[App.holdingIndex]
-                                                      ['orderId']);
-                                          if (output['statusCode'] == 200) {
-                                            ToastContext().init(context);
-                                            Toast.show(
-                                                output[output.keys.first],
-                                                duration: 5,
-                                                gravity: Toast.bottom);
-                                          } else {
-                                            ToastContext().init(context);
-                                            Toast.show(
-                                                output[output.keys.first],
-                                                duration: 5,
-                                                gravity: Toast.bottom);
-                                          }
-                                          ref.invalidate(getOrdersProvider);
-                                          holdingTabPopupNotifier.toggle();
-
-                                          holdingTabButtonLoaderNotifier
-                                              .toggle();
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
+                    ? HoldingPopupDetail(data: data)
                     : const SizedBox()
               ],
             ),
@@ -170,6 +84,108 @@ class InvestTabMyHoldings extends ConsumerWidget {
       },
       loading: () => const Center(
         child: CircularProgressIndicator(color: Palette.primaryColor),
+      ),
+    );
+  }
+}
+
+class HoldingPopupDetail extends ConsumerWidget {
+  final data;
+  const HoldingPopupDetail({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profitLoss = data[App.holdingIndex]['price'] -
+        data[App.holdingIndex]['priceAtOrder'];
+    return SizedBox(
+      height: 420,
+      // width: double.infinity,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.grey.withOpacity(0.05)),
+          child: Center(
+            child: Container(
+              color: Palette.secondaryBlackColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                          icon: const Icon(
+                            Icons.close_sharp,
+                            color: Palette.secondaryOffWhiteColor,
+                          ),
+                          onPressed: () {
+                            holdingTabPopupNotifier.toggle();
+                          }),
+                    ),
+                    const SizedBox(height: 9),
+                    Text(
+                      "Do You Want To Close The Position?",
+                      style: titleSmall(),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Ordered Price     ₹${data[App.holdingIndex]['priceAtOrder']}",
+                      style: bodyLarge(),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Current Price     ₹${data[App.holdingIndex]['price']}",
+                      style: bodyLarge(),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Profit/Loss   ₹${(data[App.holdingIndex]['orderType'] == 'Buy' ? profitLoss : profitLoss * -1).toStringAsFixed(2)}",
+                      style: bodyLarge(),
+                    ),
+                    const SizedBox(height: 15),
+                    Divider(),
+                    const SizedBox(height: 15),
+                    Text(
+                      "Invested amount   ₹${(data[App.holdingIndex]['priceAtOrder'] * data[App.holdingIndex]['quantity']).toStringAsFixed(2)}",
+                      style: bodyLarge(),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Total Profit/Loss   ₹${((data[App.holdingIndex]['orderType'] == 'Sell' ? profitLoss * -1 : profitLoss) * data[App.holdingIndex]['quantity']).toStringAsFixed(2)}",
+                      style: bodyLarge(),
+                    ),
+                    const SizedBox(height: 10),
+                    Divider(),
+                    const SizedBox(height: 10),
+                    LogInButton(
+                      loaderProvider: holdingTabButtonLoaderProvider,
+                      text: "Close",
+                      function: () async {
+                        holdingTabButtonLoaderNotifier.toggle();
+
+                        final output = await ApiCalls.closeOrder(
+                            data[App.holdingIndex]['orderId']);
+                        if (output['statusCode'] == 200) {
+                          ToastContext().init(context);
+                          Toast.show(output[output.keys.first],
+                              duration: 5, gravity: Toast.bottom);
+                        } else {
+                          ToastContext().init(context);
+                          Toast.show(output[output.keys.first],
+                              duration: 5, gravity: Toast.bottom);
+                        }
+                        ref.invalidate(getOrdersProvider);
+                        holdingTabPopupNotifier.toggle();
+
+                        holdingTabButtonLoaderNotifier.toggle();
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

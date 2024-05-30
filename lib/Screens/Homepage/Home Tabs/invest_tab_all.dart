@@ -20,7 +20,7 @@ class InvestTabAll extends ConsumerWidget {
         const Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16.0),
           child: Text(
-            'IPO Script List',
+            'IPO Scripts',
             style: TextStyle(
               color: Palette.secondaryWhiteColor,
               fontSize: 25,

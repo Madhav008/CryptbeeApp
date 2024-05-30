@@ -1,12 +1,18 @@
-Version 1.4.0
+-------------------------------------------------------
+Version 1.5.0
 Features/Bugs Fixes:
-    1. Show the transaction
     2. Show the date of closed order
     3. Correct the brokrage according to the number of shares
-    4. Implement the wallet rs addition when order closed (
+-------------------------------------------------------
+Version 1.4.0
+Features/Bugs Fixes:
+    1. Show the transaction [done]
+    2. Implement the wallet rs addition when order closed (
         //invested +(p/l) = return amount
         //1000 + 1000 = 2000
-    )
+    ) [done]
+    3. Show the view more option and In-Popup show the total invested amount[done]
+    4. Show the total holding amount [done] 
 -------------------------------------------------------
 Version 1.3.0
 Features/Bugs Fixes:

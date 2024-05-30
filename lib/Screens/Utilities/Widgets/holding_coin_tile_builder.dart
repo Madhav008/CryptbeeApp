@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cryptbee/Models/coin_model.dart';
 import 'package:cryptbee/Screens/Utilities/Riverpod/riverpod_variables.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/but_sell_button.dart';
+import 'package:cryptbee/Screens/Utilities/Widgets/log_in_button.dart';
 import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 import 'package:cryptbee/Screens/Utilities/static_classes.dart';
 import 'package:flutter/material.dart';
@@ -122,15 +123,30 @@ Widget holdingCoinTileBuilder(Coin coin, int index, var data) {
                                 ? Palette.secondaryErrorColor
                                 : Palette.secondaryCorrectColor),
                       ),
-                      BuySellButton(
-                        text: "Close",
-                        width: 112,
-                        function: () {
+                      InkWell(
+                        onTap: () {
                           App.holdingIndex = index;
                           App.currentCoin = coin.shortForm;
                           holdingTabPopupNotifier.toggle();
                         },
-                      )
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                Palette.neutralDarkGrey),
+                            foregroundColor: MaterialStateProperty.all(
+                                Palette.secondaryWhiteColor),
+                          ),
+                          onPressed: () {
+                            App.holdingIndex = index;
+                            App.currentCoin = coin.shortForm;
+                            holdingTabPopupNotifier.toggle();
+                          },
+                          child: Text(
+                            "View More",
+                            style: bodyMedium(),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 )
