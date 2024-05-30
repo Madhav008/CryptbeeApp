@@ -1,8 +1,14 @@
 -------------------------------------------------------
 Version 1.5.0
 Features/Bugs Fixes:
-    2. Show the date of closed order
-    3. Correct the brokrage according to the number of shares
+    1. Show the date of closed order
+    2. Correct the brokrage according to the number of shares
+    3. Show the diffrent rate of the  buy and sell
+----------------------------------------------~---------
+Version 1.4.1
+Features/Bugs Fixes:
+    1. Show the total profit and loss in wallet page
+    2. Show the total standing balance
 -------------------------------------------------------
 Version 1.4.0
 Features/Bugs Fixes:

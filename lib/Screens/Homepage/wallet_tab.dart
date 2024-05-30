@@ -10,6 +10,44 @@ class WalletTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // ref.invalidate(getWalletProvider);
+    final orderdata = ref.watch(getOrdersProvider);
+    final preparedData = orderdata.when(
+      data: (data) {
+        return data;
+      },
+      loading: () {
+        return null;
+      },
+      error: (error, stackTrace) {
+        return null;
+      },
+    );
+    print("----------------------------------------------------");
+    double totalHoldingAmount = 0;
+    double totalProfitnLoss = 0;
+
+    // Iterate over orders
+    for (var order in preparedData['orders']) {
+      final double quantity = order['quantity'] + 0.0;
+      final double priceAtOrder = order['priceAtOrder'] + 0.0;
+      final double currentPrice = order['price'] + 0.0;
+
+      // Calculate total holding amount
+      totalHoldingAmount += quantity * priceAtOrder;
+
+      // Calculate total profit and loss
+      //To calculate the totalProfit and totalLoss we need to check the type of order first
+      if (order['type'] == "Buy") {
+        totalProfitnLoss += quantity * (currentPrice - priceAtOrder);
+      }
+      if (order['type'] == "Sell") {
+        final profit = quantity * (currentPrice - priceAtOrder);
+        totalProfitnLoss += (profit * -1);
+      }
+    }
+
+    print(totalHoldingAmount);
+    print(totalProfitnLoss);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -23,14 +61,14 @@ class WalletTab extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                (data['balance']) > 0
+                                (totalProfitnLoss) > 0
                                     ? "Total Profit"
                                     : "Total Loss",
                                 style: headlineSmall(
                                   fontColor: Palette.primaryColor,
                                 )),
                             Text(
-                              "₹ ${(data['balance'].toStringAsFixed(2))}",
+                              "₹ ${(totalProfitnLoss.toStringAsFixed(2))}",
                               style: headlineSmall(),
                             ),
                           ],
@@ -53,7 +91,23 @@ class WalletTab extends ConsumerWidget {
                             style: headlineLarge(),
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Total Standings",
+                            style: labelSmall(),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "₹ ${totalHoldingAmount.toStringAsFixed(2)}",
+                            style: headlineLarge(),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     );
                   },
@@ -87,7 +141,6 @@ class WalletTab extends ConsumerWidget {
                   height: 332,
                   child: ref.watch(transactionsProvider).when(
                         data: (data) {
-                          print(data);
                           data = data['userTransactions'];
                           return ListView.builder(
                             itemCount: data.length + 1,

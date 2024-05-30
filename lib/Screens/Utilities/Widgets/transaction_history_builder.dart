@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_brace_in_string_interps
 
 import 'dart:developer';
+import 'package:intl/intl.dart';
 
 import 'package:cryptbee/Screens/Utilities/Widgets/utilities.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,13 @@ class TransactionHistoryBuilder extends ConsumerWidget {
     final String quantity = transaction['amount'].toString();
     final String shortName = transaction['description'];
     final DateTime createdAt = DateTime.parse(transaction['createdAt']);
-    final String monthDate =
-        createdAt.toLocal().month.toString().padLeft(2, '0');
-    final String year = createdAt.year.toString();
+    final DateFormat dateFormatter = DateFormat('dd-MMM-yy');
+    final String monthDate = dateFormatter.format(createdAt.toLocal());
     final String price = transaction['amount'].toString();
 
-    print("$activity $quantity $shortName $monthDate $year $price");
+    final DateFormat timeFormatter = DateFormat.Hm();
+    final String time = timeFormatter.format(createdAt.toLocal());
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
@@ -59,7 +61,7 @@ class TransactionHistoryBuilder extends ConsumerWidget {
                             fontColor: Palette.secondaryOffWhiteColor),
                       ),
                       Text(
-                        "$quantity $shortName",
+                        " ${time}",
                         style: bodyMedium(fontColor: Palette.neutralGrey),
                       ),
                     ],
@@ -71,11 +73,11 @@ class TransactionHistoryBuilder extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    activity,
+                    shortName,
                     style:
                         bodyMedium(fontColor: Palette.secondaryOffWhiteColor),
                   ),
-                  Text("$monthDate, $year",
+                  Text(monthDate,
                       style: bodyMedium(
                         fontColor: Palette.neutralGrey,
                       )),

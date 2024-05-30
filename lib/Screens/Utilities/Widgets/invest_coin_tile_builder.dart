@@ -16,7 +16,7 @@ class InvestCoinTileBuilder extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 26),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
       child: GestureDetector(
         onTap: () {
           App.currentCoin = coin.shortForm;
